@@ -1,0 +1,31 @@
+
+.log
+.checkstyle
+*.*~
+*.tmp
+
+# idea
+*.iml
+.idea/
+classes/
+.gradletasknamecache
+
+# eclipse
+.classpath
+.project
+.settings
+bin/
+
+#netbeans
+.nb-gradle
+
+# yeoman (grunt, bower)
+node_modules/
+bower_components/
+.tmp/
+
+out/
+rebel.xml
+
+yarn.lock
+.reviewboardrc
