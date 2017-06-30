@@ -127,7 +127,7 @@
 				<configuration>
 					<includes>
 						<include>**/*Test.java</include>
-						<include>**/*Should.groovy</include>
+						<include>**/*Should.java</include>
 					</includes>
 				</configuration>
 			</plugin>
