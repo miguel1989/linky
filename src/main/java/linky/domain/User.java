@@ -1,19 +1,12 @@
 package linky.domain;
 
-import com.datastax.driver.core.utils.UUIDs;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.time.LocalTime;
-import java.util.UUID;
+import javax.persistence.Table;
 
 @Entity
-public class User {
-
-	@Id
-	@Column(name = "id")
-	private UUID id = UUIDs.timeBased();
+@Table(name = "users")
+public class User extends BaseEntity {
 
 	@Column(name = "email", unique = true, length = 120)
 	private String email;//todo maybe Email obj with custom validations
@@ -23,9 +16,6 @@ public class User {
 
 	@Column(name = "name")
 	private String name;
-
-	@Column(name = "created_at")
-	private LocalTime createdAt = LocalTime.now();
 
 	//default constructor for hibernate
 	public User() {
@@ -48,13 +38,5 @@ public class User {
 
 	public String name() {
 		return name;
-	}
-
-	public UUID id() {
-		return id;
-	}
-
-	public LocalTime createdAt() {
-		return createdAt;
 	}
 }
