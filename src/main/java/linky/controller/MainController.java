@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MainController {
 	
 	@Autowired
-	PipedNow pipedNow;
+	private PipedNow pipedNow;
 	
 	@RequestMapping("/test")
 	public String index() {

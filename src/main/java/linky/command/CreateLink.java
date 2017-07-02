@@ -23,4 +23,9 @@ public class CreateLink implements Command<Command.R.Void> {
 	public String url() {
 		return url;
 	}
+
+	@Override
+	public String toLogString() {
+		return "CreateLink ( userId=" + userId + ", name=" + name + ", url=" + url + " )";
+	}
 }

@@ -1,7 +1,6 @@
 package linky.infra;
 
-import com.google.common.collect.Maps;
-import linky.exceptions.NoReactionFound;
+import linky.exception.NoReactionFound;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,11 +8,12 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class Reactions {
-	
-	private Map<Type, Reaction> mapping = Maps.newHashMap();
+
+	private Map<Type, Reaction> mapping = new ConcurrentHashMap<>();
 //	private final LoadingCache<Type, Reaction> cachedReactions;
 	
 	@Autowired

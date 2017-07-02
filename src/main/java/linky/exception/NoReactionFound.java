@@ -1,4 +1,4 @@
-package linky.exceptions;
+package linky.exception;
 
 import java.lang.reflect.Type;
 

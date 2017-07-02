@@ -12,6 +12,8 @@ public interface Command<T extends Command.R> {
 		}
 	}
 	
+	String toLogString();
+	
 	default T execute (Now now) {
 		return now.execute(this);
 	}
