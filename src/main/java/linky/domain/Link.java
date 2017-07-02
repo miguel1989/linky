@@ -18,7 +18,7 @@ public class Link extends BaseEntity {
 	@Column(name = "created_by")
 	private String createdBy;
 
-	@OneToMany(mappedBy = "link", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "link", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Collection<Visit> visits = new LinkedList<>();
 
 	//default constructor for hibernate

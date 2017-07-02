@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.util.Optional;
 
+@Entity
 @Table(name = "link_visits")
 public class Visit extends BaseEntity {
 	

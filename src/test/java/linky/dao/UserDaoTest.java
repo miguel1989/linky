@@ -1,6 +1,7 @@
 package linky.dao;
 
 import linky.domain.User;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,14 @@ public class UserDaoTest {
 	
 	@Autowired
 	private UserDao userDao;
+
+	@Before
+	public void setup() {
+		userDao.deleteAll();
+	}
 	
 	@Test
-	public void create() {
+	public void query() {
 		User user = new User("batman@batman.com", "secret", "Bruce Wayne");
 		userDao.save(user);
 

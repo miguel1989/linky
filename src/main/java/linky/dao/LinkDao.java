@@ -1,10 +1,12 @@
 package linky.dao;
 
-import linky.domain.User;
+import linky.domain.Link;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface UserDao extends PagingAndSortingRepository<User, UUID> {
+public interface LinkDao extends PagingAndSortingRepository<Link, UUID> {
+	List<Link> findByCreatedBy(String createdBy);
 }
