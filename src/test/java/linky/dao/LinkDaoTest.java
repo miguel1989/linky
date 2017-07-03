@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,6 +41,18 @@ public class LinkDaoTest {
 		
 		links = linkDao.findByCreatedBy("wrong");
 		assertThat(links).hasSize(0);
+	}
+
+	@Test
+	public void findByName() {
+		Link link1 = new Link("gogle", "www.google.lv", "batman");
+		linkDao.save(link1);
+		
+		Optional<Link> optional = linkDao.findByName("gogle");
+		assertThat(optional.isPresent()).isTrue();
+
+		optional = linkDao.findByName("gogle1");
+		assertThat(optional.isPresent()).isFalse();
 	}
 	
 	private void check(Link link, String expectedName, String expectedUrl) {
