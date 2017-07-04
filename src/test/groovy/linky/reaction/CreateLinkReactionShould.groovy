@@ -3,7 +3,7 @@ package linky.reaction
 import linky.command.CreateLink
 import linky.dao.LinkDao
 import linky.domain.Link
-import linky.infra.Command
+import linky.dto.LinkBean
 import spock.lang.Specification
 
 class CreateLinkReactionShould extends Specification {
@@ -20,11 +20,11 @@ class CreateLinkReactionShould extends Specification {
 
 	def "correct react"() {
 		when:
-		Command.R result = createLinkReaction.react(
+		LinkBean linkBean = createLinkReaction.react(
 				new CreateLink('batman', 'gogle', 'www.google.lv'))
 
 		then:
-		result instanceof Command.R.Void
+		assert linkBean
 		1 * linkDao.save(_ as Link) >> { args ->
 			Link link = args[0] as Link
 			assert link.id()

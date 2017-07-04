@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class MainController {
-	
+
 	@Autowired
 	private PipedNow pipedNow;
-	
+
 	@RequestMapping("/test")
 	public String index() {
 		CreateLink createLink = new CreateLink("a", "b", "c");

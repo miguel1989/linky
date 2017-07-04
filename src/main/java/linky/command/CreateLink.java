@@ -1,8 +1,9 @@
 package linky.command;
 
+import linky.dto.LinkBean;
 import linky.infra.Command;
 
-public class CreateLink implements Command<Command.R.Void> {
+public class CreateLink implements Command<LinkBean> {
 
 	private String userId;
 	private String name;
