@@ -24,7 +24,7 @@ public class Validations {
 		return beanFactory.getBeansOfType(Validation.class).values();
 	}
 	
-	public <C extends Command> Optional<Validation<C>> byCommand(C command) {
+	<C extends Command> Optional<Validation<C>> byCommand(C command) {
 		return Optional.ofNullable(mapping.get(command.type()));
 	}
 }

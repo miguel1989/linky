@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
+@Component 
 public class Reactions {
 
 	private Map<Type, Reaction> mapping = new ConcurrentHashMap<>();
@@ -25,7 +25,7 @@ public class Reactions {
 		return beanFactory.getBeansOfType(Reaction.class).values();
 	}
 
-	public <C extends Command<R>, R extends Command.R> Reaction<C, R> byCommand(C command) {
+	<C extends Command<R>, R extends Command.R> Reaction<C, R> byCommand(C command) {
 		Reaction<C, R> reaction = mapping.get(command.type());
 		if (reaction == null) {
 			throw new NoReactionFound(command.type());
