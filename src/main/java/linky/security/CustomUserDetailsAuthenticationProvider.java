@@ -16,12 +16,12 @@ import java.util.Optional;
 
 @Service
 public class CustomUserDetailsAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
-	
+
 	@Autowired
 	private UserDao userDao;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Override
 	protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) throws AuthenticationException {
 		if (usernamePasswordAuthenticationToken.getCredentials() == null) {
@@ -37,7 +37,7 @@ public class CustomUserDetailsAuthenticationProvider extends AbstractUserDetails
 	protected UserDetails retrieveUser(String email, UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) throws AuthenticationException {
 		Optional<User> optionalUser = userDao.findByEmail(email);
 		if (!optionalUser.isPresent()) {
-			throw new NoUserFound("");
+			throw new NoUserFound();
 		}
 		return optionalUser.get();
 	}

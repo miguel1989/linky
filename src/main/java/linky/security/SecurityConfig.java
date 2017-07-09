@@ -19,9 +19,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/",
 						"/login",
 						"/register",
+						"/me",
 						"/logout")
 						.permitAll()
-				.anyRequest().authenticated();
+				.anyRequest().authenticated()
+				.and().csrf().disable();
+		//.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
+		// .logout().logoutSuccessHandler(customLogoutSuccessHandler())
+		// .successHandler(customLoginSuccessHandler())
+//                    .failureHandler(customLoginFailureHandler())
+//				.usernameParameter("username").passwordParameter("password")
 //				.and()
 //				.formLogin()
 //					.loginPage("/login")
