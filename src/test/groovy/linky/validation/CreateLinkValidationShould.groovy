@@ -17,10 +17,7 @@ class CreateLinkValidationShould extends Specification {
 	void setup() {
 		linkDao = Mock(LinkDao)
 		userDao = Mock(UserDao)
-		createLinkValidation = new CreateLinkValidation(
-				linkDao: linkDao,
-				userDao: userDao
-		)
+		createLinkValidation = new CreateLinkValidation(userDao, linkDao)
 	}
 
 	def "null command"() {

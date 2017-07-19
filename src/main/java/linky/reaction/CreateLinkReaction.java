@@ -11,8 +11,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class CreateLinkReaction implements Reaction<CreateLink, LinkBean> {
 
+	private final LinkDao linkDao;
+
 	@Autowired
-	private LinkDao linkDao;
+	public CreateLinkReaction(LinkDao linkDao) {
+		this.linkDao = linkDao;
+	}
 
 	@Override
 	public LinkBean react(CreateLink command) {

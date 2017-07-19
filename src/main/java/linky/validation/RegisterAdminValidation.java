@@ -1,6 +1,6 @@
 package linky.validation;
 
-import linky.command.RegisterUser;
+import linky.command.RegisterAdmin;
 import linky.dao.UserDao;
 import linky.exception.ValidationFailed;
 import linky.infra.Validation;
@@ -9,17 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RegisterUserValidation implements Validation<RegisterUser> {
+public class RegisterAdminValidation implements Validation<RegisterAdmin> {
 
 	private final UserDao userDao;
 
 	@Autowired
-	public RegisterUserValidation(UserDao userDao) {
+	public RegisterAdminValidation(UserDao userDao) {
 		this.userDao = userDao;
 	}
 
 	@Override
-	public void validate(RegisterUser command) {
+	public void validate(RegisterAdmin command) {
 		if (command == null) {
 			throw new ValidationFailed("Command can not be null");
 		}

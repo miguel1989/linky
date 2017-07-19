@@ -14,11 +14,14 @@ import java.util.UUID;
 @Component
 public class CreateLinkValidation implements Validation<CreateLink> {
 
-	@Autowired
-	private UserDao userDao;
+	private final UserDao userDao;
+	private final LinkDao linkDao;
 
 	@Autowired
-	private LinkDao linkDao;
+	public CreateLinkValidation(UserDao userDao, LinkDao linkDao) {
+		this.userDao = userDao;
+		this.linkDao = linkDao;
+	}
 
 	@Override
 	public void validate(CreateLink command) {

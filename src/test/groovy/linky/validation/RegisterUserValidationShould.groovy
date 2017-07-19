@@ -13,9 +13,7 @@ class RegisterUserValidationShould extends Specification {
 
 	void setup() {
 		userDao = Mock(UserDao)
-		registerUserValidation = new RegisterUserValidation(
-				userDao: userDao
-		)
+		registerUserValidation = new RegisterUserValidation(userDao)
 	}
 	
 	def 'null command'() {
@@ -64,6 +62,18 @@ class RegisterUserValidationShould extends Specification {
 		then:
 		def ex = thrown(ValidationFailed)
 		ex.message == 'Email already exists'
+	}
+
+	def 'not an email'() {
+		setup:
+		userDao.findByEmail('crap') >> Optional.of(new User())
+
+		when:
+		registerUserValidation.validate(new RegisterUser('crap', 'secret', 'batman'))
+
+		then:
+		def ex = thrown(ValidationFailed)
+		ex.message == 'Not an email'
 	}
 
 	def 'null password'() {

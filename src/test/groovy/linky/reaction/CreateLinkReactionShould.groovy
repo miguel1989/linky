@@ -13,9 +13,7 @@ class CreateLinkReactionShould extends Specification {
 
 	void setup() {
 		linkDao = Mock(LinkDao)
-		createLinkReaction = new CreateLinkReaction(
-				linkDao: linkDao
-		)
+		createLinkReaction = new CreateLinkReaction(linkDao)
 	}
 
 	def "correct react"() {
