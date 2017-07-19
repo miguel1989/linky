@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MainController {
+public class AuthController {
 
 	@Autowired
 	private PipedNow pipedNow;
