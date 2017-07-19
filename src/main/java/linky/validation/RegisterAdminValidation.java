@@ -24,6 +24,7 @@ public class RegisterAdminValidation implements Validation<RegisterAdmin> {
 			throw new ValidationFailed("Command can not be null");
 		}
 
+		//todo maybe create self validated object EMAIL
 		if (StringUtils.isBlank(command.email())) {
 			throw new ValidationFailed("Email is empty");
 		}
@@ -32,6 +33,7 @@ public class RegisterAdminValidation implements Validation<RegisterAdmin> {
 			throw new ValidationFailed("Email already exists");
 		}
 
+		//todo maybe create self validated object PASSWORD
 		if (StringUtils.isBlank(command.password())) {
 			throw new ValidationFailed("Password is empty");
 		}

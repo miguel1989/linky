@@ -7,8 +7,10 @@ import linky.dao.UserDao;
 import linky.exception.ValidationFailed;
 import linky.infra.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -16,6 +18,11 @@ public class CreateLinkValidation implements Validation<CreateLink> {
 
 	private final UserDao userDao;
 	private final LinkDao linkDao;
+
+	@Value("#{'${reserved.words}'.split(',')}")
+	private List<String> reservedWords;
+	@Value("#{'${abuse.words}'.split(',')}")
+	private List<String> abuseWords;
 
 	@Autowired
 	public CreateLinkValidation(UserDao userDao, LinkDao linkDao) {
@@ -36,13 +43,24 @@ public class CreateLinkValidation implements Validation<CreateLink> {
 		if (userDao.findOne(UUID.fromString(command.userId())) == null) {
 			throw new ValidationFailed("User does not exist");
 		}
-
+		
+		//todo maybe create self validated object Name
 		if (Strings.isNullOrEmpty(command.name())) {
 			throw new ValidationFailed("Name is empty");
 		}
-		
+
 		if (linkDao.findByName(command.name()).isPresent()) {
 			throw new ValidationFailed("Name is already taken");
 		}
+		
+		if (isRestricted(command.name())) {
+			throw new ValidationFailed("Wrong name");
+		}
+	}
+
+	private boolean isRestricted(String name) {
+		String lower = name.toLowerCase();
+		return reservedWords.stream().filter(lower::equals).count() > 0 
+				|| abuseWords.stream().filter(lower::contains).count() > 0;
 	}
 }

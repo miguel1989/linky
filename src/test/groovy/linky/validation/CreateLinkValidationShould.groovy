@@ -18,12 +18,14 @@ class CreateLinkValidationShould extends Specification {
 		linkDao = Mock(LinkDao)
 		userDao = Mock(UserDao)
 		createLinkValidation = new CreateLinkValidation(userDao, linkDao)
+		createLinkValidation.reservedWords = ['login', 'register']
+		createLinkValidation.abuseWords = ['niger']
 	}
 
 	def "null command"() {
 		when:
 		createLinkValidation.validate(null)
-		
+
 		then:
 		def ex = thrown(ValidationFailed)
 		ex.message == 'Command can not be null'
@@ -32,7 +34,7 @@ class CreateLinkValidationShould extends Specification {
 	def "null user id"() {
 		when:
 		createLinkValidation.validate(new CreateLink(null, 'gogle', 'www.gogle.lv'))
-		
+
 		then:
 		def ex = thrown(ValidationFailed)
 		ex.message == 'UserId is empty'
@@ -60,7 +62,7 @@ class CreateLinkValidationShould extends Specification {
 		setup:
 		String uuid = UUID.randomUUID().toString()
 		userDao.findOne(UUID.fromString(uuid)) >> null
-		
+
 		when:
 		createLinkValidation.validate(new CreateLink(uuid, 'gogle', 'www.gogle.lv'))
 
@@ -68,7 +70,7 @@ class CreateLinkValidationShould extends Specification {
 		def ex = thrown(ValidationFailed)
 		ex.message == 'User does not exist'
 	}
-	
+
 	def "null name"() {
 		setup:
 		String uuid = UUID.randomUUID().toString()
@@ -107,5 +109,41 @@ class CreateLinkValidationShould extends Specification {
 		then:
 		def ex = thrown(ValidationFailed)
 		ex.message == 'Name is already taken'
+	}
+
+	def "is restricted name"() {
+		expect:
+		createLinkValidation.isRestricted(name) == result
+
+		where:
+		name         | result
+		'xloginx'    | false //reserved words, but no full match
+		'loginx'     | false //reserved words, but no full match
+		'registerMe' | false //reserved words, but no full match
+		'REGISTERme' | false //reserved words, but no full match
+		'john'       | false //normal
+		'login'      | true //reserved words
+		'LOGIN'      | true //reserved words
+		'register'   | true //reserved words
+		'REGISTER'   | true //reserved words
+		'niger'      | true //abuse words
+		'NIGER'      | true //abuse words
+		'XNIGERX'    | true //abuse words
+		'xnigerx'    | true //abuse words
+		'snigerzz'   | true //abuse words
+	}
+
+	def "wrong name"() {
+		setup:
+		String uuid = UUID.randomUUID().toString()
+		userDao.findOne(UUID.fromString(uuid)) >> new User()
+		linkDao.findByName('login') >> Optional.empty()
+
+		when:
+		createLinkValidation.validate(new CreateLink(uuid, 'login', 'www.gogle.lv'))
+
+		then:
+		def ex = thrown(ValidationFailed)
+		ex.message == 'Wrong name'
 	}
 }
