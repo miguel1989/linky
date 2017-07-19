@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/admin/user")
+@RequestMapping("/admin/users")
 public class UserAdminController {
 
 	@RequestMapping(method = RequestMethod.GET)
-	public Collection<AuthUserBean> all() {
-		return Lists.newArrayList();
+	public Collection<AuthUserBean> users() {
+		return Lists.newArrayList(); //todo me
 	}
 }
