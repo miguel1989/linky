@@ -2,13 +2,12 @@ package linky.security;
 
 import linky.dao.UserDao;
 import linky.domain.User;
-import linky.exception.NoUserFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ public class CustomUserDetailsAuthenticationProvider extends AbstractUserDetails
 	private PasswordEncoder passwordEncoder;
 
 	@Override
-	protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) throws AuthenticationException {
+	protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) {
 		if (usernamePasswordAuthenticationToken.getCredentials() == null) {
 			throw new BadCredentialsException("no password");
 		}
@@ -34,10 +33,10 @@ public class CustomUserDetailsAuthenticationProvider extends AbstractUserDetails
 	}
 
 	@Override
-	protected UserDetails retrieveUser(String email, UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) throws AuthenticationException {
+	protected UserDetails retrieveUser(String email, UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) {
 		Optional<User> optionalUser = userDao.findByEmail(email);
 		if (!optionalUser.isPresent()) {
-			throw new NoUserFound();
+			throw new UsernameNotFoundException("something is wrong");
 		}
 		return optionalUser.get();
 	}
