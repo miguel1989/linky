@@ -15,8 +15,13 @@ public class InitService implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		new RegisterUser(
-				"test@linky.lv", 
+				"user@linky.lv", 
 				"secret", 
+				"batman").execute(pipedNow);
+
+		new RegisterUser(
+				"admin@linky.lv",
+				"secret",
 				"batman").execute(pipedNow);
 	}
 }

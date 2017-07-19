@@ -7,6 +7,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "roles")
 public class Role extends BaseEntity implements GrantedAuthority {
+	
+	static final String ROLE_USER = "ROLE_USER";
+	static final String ROLE_ADMIN = "ROLE_ADMIN";
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
@@ -20,7 +23,7 @@ public class Role extends BaseEntity implements GrantedAuthority {
 
 	}
 	
-	public Role(User user, String role) {
+	Role(User user, String role) {
 		this.user = user;
 		this.role = role;
 	}

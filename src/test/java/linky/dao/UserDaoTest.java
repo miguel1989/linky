@@ -40,7 +40,7 @@ public class UserDaoTest {
 		assertThat(savedUser.name()).isEqualTo("Bruce Wayne");
 		assertThat(savedUser.getAuthorities().size()).isEqualTo(1);
 		Role role = (Role) savedUser.getAuthorities().iterator().next();
-		assertThat(role.getAuthority()).isEqualTo("USER");
+		assertThat(role.getAuthority()).isEqualTo("ROLE_USER");
 	}
 	
 	@Test

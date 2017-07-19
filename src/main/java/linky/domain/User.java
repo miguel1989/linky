@@ -47,10 +47,10 @@ public class User extends BaseEntity implements UserDetails {
 	}
 	
 	public void grantUser() {
-		this.roles.add(new Role(this, Roles.USER.toString()));
+		this.roles.add(new Role(this, Role.ROLE_USER));
 	}
 	public void grantAdmin() {
-		this.roles.add(new Role(this, Roles.ADMIN.toString()));
+		this.roles.add(new Role(this, Role.ROLE_ADMIN));
 	}
 
 	@Override

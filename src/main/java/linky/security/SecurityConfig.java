@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Autowired
-	@Lazy //todo dirty. hack remove me. or passwordEncoder is still in creation
+	@Lazy //todo dirty hack. passwordEncoder is still in creation exception occurs
 	private CustomUserDetailsAuthenticationProvider customUserDetailsAuthenticationProvider;
 
 	@Autowired
@@ -34,16 +34,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 				.authorizeRequests()
 				.antMatchers("/",
-//						"/login",
 						"/register",
 						"/me",
 						"/logout")
 				.permitAll()
+				.antMatchers("/admin/**").hasRole("ADMIN")
+				.antMatchers("/api/**").hasRole("USER")
 				.anyRequest().authenticated()
-				.and()
-				.formLogin()
-				.loginPage("/login")
-				.permitAll()
+				.and().formLogin().loginPage("/login").permitAll()
 				.and().httpBasic()
 				.and().logout()
 				.and().csrf().disable();
