@@ -1,6 +1,6 @@
 package linky.controller;
 
-import com.google.common.collect.Lists;
+import linky.command.FindLinksForUser;
 import linky.dto.LinkBean;
 import linky.infra.PipedNow;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,6 @@ public class LinksController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public Collection<LinkBean> myLinks() {
-		return Lists.newArrayList(); //todo me
+		return new FindLinksForUser(AuthUser.id()).execute(pipedNow).links;
 	}
 }

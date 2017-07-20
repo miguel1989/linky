@@ -54,5 +54,7 @@ public class CreateLinkValidation implements Validation<CreateLink> {
 		if (!uniqueLinkName.guaranteed(command.name())) {
 			throw new ValidationFailed("Link name is already taken");
 		}
+		
+		//todo validate URL
 	}
 }

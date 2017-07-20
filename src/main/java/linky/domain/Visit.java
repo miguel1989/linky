@@ -3,12 +3,11 @@ package linky.domain;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.Optional;
 
 @Entity
 @Table(name = "link_visits")
 public class Visit extends BaseEntity {
-	
+
 //	@Embedded
 //	private LinkId linkId;
 
@@ -26,12 +25,12 @@ public class Visit extends BaseEntity {
 	@Basic(fetch = FetchType.LAZY)
 	@Lob
 	@Type(type = "org.hibernate.type.TextType")
-	private Optional<String> data = Optional.empty();//full json data from provider
+	private String data;//full json data from provider
 
 	//default constructor for hibernate
-//	public Visit() {
-//		
-//	}
+	public Visit() {
+
+	}
 
 	public Visit(Link link, String ip) {
 		this.link = link;
@@ -40,7 +39,7 @@ public class Visit extends BaseEntity {
 
 	public void tag(String country, String data) {
 		this.country = country;
-		this.data = Optional.of(data);
+		this.data = data;
 	}
 
 	public Link link() {
@@ -50,12 +49,12 @@ public class Visit extends BaseEntity {
 	public String ip() {
 		return this.ip;
 	}
-	
+
 	public String country() {
 		return this.country;
 	}
-	
-	public Optional<String> data() {
+
+	public String data() {
 		return data;
 	}
 }

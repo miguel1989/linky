@@ -3,7 +3,6 @@ package linky.dto;
 import linky.domain.Visit;
 
 import java.time.LocalTime;
-import java.util.Optional;
 
 public class VisitBean {
 	
@@ -11,7 +10,7 @@ public class VisitBean {
 	public String ip;
 	public String country;
 	public LocalTime createdAt;
-	public Optional<String> data = Optional.empty();
+	public String data;
 	
 	public VisitBean(Visit visit) {
 		this.id = visit.id().toString();
