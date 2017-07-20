@@ -22,13 +22,13 @@ public class AuthController {
 	@RequestMapping(method = RequestMethod.POST, value = "/register")
 	public UserBean register(@RequestBody RegisterUserBean registerUserBean) {
 		AuthUserBean authUserBean = new RegisterUser(
-				registerUserBean.email, 
-				registerUserBean.password, 
+				registerUserBean.email,
+				registerUserBean.password,
 				registerUserBean.name).execute(pipedNow);
 
 		SecurityContextHolder.getContext().setAuthentication(
 				new UsernamePasswordAuthenticationToken(authUserBean.id, null, authUserBean.roles));
-		
+
 		return new UserBean(authUserBean);
 	}
 }

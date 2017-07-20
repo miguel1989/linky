@@ -1,4 +1,4 @@
-package linky.controller;
+package linky.controller.admin;
 
 import com.google.common.collect.Lists;
 import linky.dto.AuthUserBean;
@@ -10,7 +10,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/admin/users")
-public class UserAdminController {
+public class UsersAdminController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public Collection<AuthUserBean> users() {

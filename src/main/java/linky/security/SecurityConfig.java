@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Autowired
 	@Lazy //todo dirty hack. passwordEncoder is still in creation exception occurs
 	private CustomUserDetailsAuthenticationProvider customUserDetailsAuthenticationProvider;
@@ -33,15 +33,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 				.authorizeRequests()
-				.antMatchers("/",
-						"/register",
-						"/me",
-						"/logout")
-				.permitAll()
 				.antMatchers("/admin/**").hasRole("ADMIN")
 				.antMatchers("/api/**").hasAnyRole("USER", "ADMIN")
+				.antMatchers("/",
+						"/*",
+						"/register",
+						"/logout")
+				.permitAll()
 				.anyRequest().authenticated()
-				.and().formLogin().loginPage("/login").permitAll()
+				.and().formLogin().loginPage("/service/login").permitAll()
 				.and().httpBasic()
 				.and().logout()
 				.and().csrf().disable();
