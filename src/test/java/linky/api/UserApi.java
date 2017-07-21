@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserApi {
-	
+
 	private String localUrl;
-	
+
 	@Autowired
 	private TestConfig testConfig;
 	
@@ -20,11 +20,11 @@ public class UserApi {
 		registerUserBean.email = email;
 		registerUserBean.password = "secret";
 		registerUserBean.name = "test user";
-		
+
 		HttpEntity<RegisterUserBean> request = new HttpEntity<>(registerUserBean);
 		return testConfig.restTemplate().postForObject(localUrl + "/register", request, UserBean.class);
 	}
-	
+
 	public void useLocalUrl(String localUrl) {
 		this.localUrl = localUrl;
 	}
