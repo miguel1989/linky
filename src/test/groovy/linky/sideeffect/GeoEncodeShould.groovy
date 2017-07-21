@@ -45,6 +45,20 @@ class GeoEncodeShould extends Specification {
 		visit.data() == '{}'
 	}
 
+	def 'json response with empty country'() {
+		setup:
+		Visit visit = new Visit()
+		visitDao.findOne(_) >> visit
+		restTemplate.getForEntity(_, _) >> new ResponseEntity<>('{"country_name":""}', HttpStatus.OK)
+
+		when:
+		geoEncode.occur(new NewVisitOccurred(UUID.randomUUID(), '127.1.1.1'))
+
+		then:
+		visit.country() == 'No country =('
+		visit.data() == '{"country_name":""}'
+	}
+
 	def 'normal json response'() {
 		setup:
 		Visit visit = new Visit()

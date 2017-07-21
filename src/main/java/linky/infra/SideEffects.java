@@ -28,6 +28,6 @@ public class SideEffects {
 	}
 
 	public Collection<SideEffect> byEvent(DomainEvent domainEvent) {
-		return mapping.get(domainEvent);
+		return mapping.get(domainEvent.type());
 	}
 }

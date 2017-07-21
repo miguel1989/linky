@@ -6,6 +6,7 @@ import linky.dao.VisitDao;
 import linky.domain.Visit;
 import linky.event.NewVisitOccurred;
 import linky.infra.SideEffect;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -45,6 +46,9 @@ public class GeoEncode implements SideEffect<NewVisitOccurred> {
 			String country = NO_COUNTRY;
 			if (root.has(JSON_COUNTRY_NAME)) {
 				country = root.get(JSON_COUNTRY_NAME).asText();
+			}
+			if (StringUtils.isBlank(country)) {
+				country = NO_COUNTRY;
 			}
 			visit.tag(country, strResponse);
 		} catch (IOException e) {
