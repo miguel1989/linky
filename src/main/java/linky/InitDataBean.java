@@ -1,15 +1,16 @@
-package linky.controller;
+package linky;
 
 import linky.command.RegisterAdmin;
 import linky.command.RegisterUser;
 import linky.infra.PipedNow;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-public class InitService implements InitializingBean {
-	//todo add spring profiles
+@Profile(Profiles.DEV)
+public class InitDataBean implements InitializingBean {
 
 	@Autowired
 	private PipedNow pipedNow;

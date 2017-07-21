@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 public class Application {
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
@@ -15,6 +15,7 @@ public class Application {
 	@Bean
 	public RestTemplate restTemplate() {
 		//RestTemplateBuilder builder
+		System.out.println("NORMAL instance of RestTemplate");
 		return new RestTemplate();
 	}
 }
