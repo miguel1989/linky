@@ -4,6 +4,10 @@ import linky.command.VisitLink
 import linky.dao.LinkDao
 import linky.domain.Link
 import linky.dto.VisitLinkBean
+import linky.infra.EphemeralDomainEvents
+import linky.infra.SideEffects
+import org.springframework.beans.factory.ListableBeanFactory
+import org.springframework.transaction.support.TransactionTemplate
 import spock.lang.Specification
 
 class VisitLinkReactionShould extends Specification {
@@ -14,6 +18,11 @@ class VisitLinkReactionShould extends Specification {
 	void setup() {
 		linkDao = Mock(LinkDao)
 		visitLinkReaction = new VisitLinkReaction(linkDao)
+
+		SideEffects sideEffects = new SideEffects(Mock(ListableBeanFactory){
+			getBeansOfType(_) >> [:]
+		})
+		new EphemeralDomainEvents(sideEffects, Mock(TransactionTemplate))
 	}
 
 	def 'not found link'() {

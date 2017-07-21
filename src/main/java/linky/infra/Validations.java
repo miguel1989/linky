@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class Validations {
-	
+
 	private Map<Type, Validation> mapping = new ConcurrentHashMap<>();
 
 	@Autowired

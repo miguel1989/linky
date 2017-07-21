@@ -8,8 +8,9 @@ import javax.persistence.*;
 @Table(name = "link_visits")
 public class Visit extends BaseEntity {
 
-//	@Embedded
+	//	@Embedded
 //	private LinkId linkId;
+	private static final String PENDING = "pending";
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "link_id")
@@ -19,7 +20,7 @@ public class Visit extends BaseEntity {
 	private String ip;
 
 	@Column(name = "country", length = 120)
-	private String country = "pending";//static const
+	private String country = PENDING;
 
 	@Column(name = "json_data")
 	@Basic(fetch = FetchType.LAZY)
