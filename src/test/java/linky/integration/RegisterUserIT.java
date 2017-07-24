@@ -1,27 +1,34 @@
 package linky.integration;
 
 import linky.BasicIntegrationTest;
-import linky.dto.UserBean;
+import org.junit.Rule;
 import org.junit.Test;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import org.junit.rules.ExpectedException;
+import org.springframework.web.client.HttpClientErrorException;
 
 public class RegisterUserIT extends BasicIntegrationTest {
 
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+
 	@Test
 	public void deleteAndRegister() {
-		userApi.deleteUser(TEST_USER_EMAIL);
-		
-		UserBean userBean = userApi.registerUser(TEST_USER_EMAIL);
-		assertThat(userBean.id, is(notNullValue()));
-		assertThat(userBean.email, is(TEST_USER_EMAIL));
-		assertThat(userBean.name, is(notNullValue()));
+		userApi.registerUserAndAssert(TEST_USER_EMAIL);
 
-		userApi.deleteUser(TEST_USER_EMAIL);
-		userApi.registerUser(TEST_USER_EMAIL);
-		userApi.deleteUser(TEST_USER_EMAIL);
+		userApi.deleteUserAndAssert(TEST_USER_EMAIL);
+		userApi.registerUserAndAssert(TEST_USER_EMAIL);
 		//todo check that there is no users with tht email registered
 	}
+
+	@Test
+	public void duplicateEmail() {
+		userApi.registerUserAndAssert(TEST_USER_EMAIL);
+
+		//todo investigate how to check the message...
+		thrown.expect(HttpClientErrorException.class);
+//		thrown.expectMessage(""); HttpClientErrorException return message as "400 null"
+		userApi.registerUser(TEST_USER_EMAIL);
+	}
+	
+	//todo register not an email
 }

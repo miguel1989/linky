@@ -20,32 +20,40 @@ import static org.hamcrest.Matchers.notNullValue;
 public class UserApi {
 
 	private String localUrl;
-
-	@Autowired
 	private RestTemplate restTemplate;
 
-	public UserBean registerUser(String email) {
+	@Autowired
+	public UserApi(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
+	}
+
+	public UserBean registerUserAndAssert(String email) {
+		ResponseEntity<UserBean> response = registerUser(email);
+
+		assertThat(response.getStatusCode(), is(HttpStatus.OK));
+		UserBean userBean = response.getBody();
+		assertThat(userBean, is(notNullValue()));
+		assertThat(userBean.id, is(notNullValue()));
+		assertThat(userBean.email, is(email));
+
+		return userBean;
+	}
+
+	public ResponseEntity<UserBean> registerUser(String email) {
 		RegisterUserBean registerUserBean = new RegisterUserBean();
 		registerUserBean.email = email;
 		registerUserBean.password = TEST_PASSWORD;
 		registerUserBean.name = "test user";
 
 		HttpEntity<RegisterUserBean> request = new HttpEntity<>(registerUserBean);
-		ResponseEntity<UserBean> response = restTemplate.exchange(
-				localUrl + "/register",
+		return restTemplate.exchange(
+				localUrl + "/service/register",
 				HttpMethod.POST,
 				request,
 				UserBean.class);
-
-		assertThat(response.getStatusCode(), is(HttpStatus.OK));
-		UserBean userBean = response.getBody();
-		assertThat(userBean, is(notNullValue()));
-		assertThat(userBean.id, is(notNullValue()));
-
-		return userBean;
 	}
 
-	public void deleteUser(String email) {
+	public void deleteUserAndAssert(String email) {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.set(HttpHeaders.AUTHORIZATION, 
 				buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));

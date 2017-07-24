@@ -14,7 +14,7 @@ public class LinkTestIT extends BasicIntegrationTest {
 	@Test
 	@Ignore
 	public void dummy() {
-		UserBean userBean = userApi.registerUser("test@linky.lv");
+		UserBean userBean = userApi.registerUserAndAssert("test@linky.lv");
 		assertThat(userBean, is(notNullValue()));
 	}
 }

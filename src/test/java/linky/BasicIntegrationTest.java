@@ -1,6 +1,7 @@
 package linky;
 
 import linky.api.UserApi;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,13 @@ public abstract class BasicIntegrationTest {
 	public void setup() {
 		//todo find a better way to pass port to API
 		userApi.useLocalUrl(localUrl());
+
+		userApi.deleteUserAndAssert(TEST_USER_EMAIL);
+	}
+
+	@After
+	public void cleanUp() {
+		userApi.deleteUserAndAssert(TEST_USER_EMAIL);
 	}
 
 	public String localUrl() {

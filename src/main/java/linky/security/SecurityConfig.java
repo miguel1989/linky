@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/**").hasAnyRole("USER", "ADMIN")
 				.antMatchers("/",
 						"/*",
-						"/register",
+						"/service/register",
 						"/logout")
 				.permitAll()
 				.anyRequest().authenticated()

@@ -19,7 +19,7 @@ public class AuthController {
 	@Autowired
 	private PipedNow pipedNow;
 
-	@RequestMapping(method = RequestMethod.POST, value = "/register")
+	@RequestMapping(method = RequestMethod.POST, value = "/service/register")
 	public UserBean register(@RequestBody RegisterUserBean registerUserBean) {
 		AuthUserBean authUserBean = new RegisterUser(
 				registerUserBean.email,
