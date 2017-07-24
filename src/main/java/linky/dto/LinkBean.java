@@ -12,6 +12,10 @@ public class LinkBean implements Command.R {
 	public String url;
 	public Collection<VisitBean> visits;
 	
+	public LinkBean() {
+		
+	}
+	
 	public LinkBean(Link link) {
 		this.id = link.id().toString();
 		this.name = link.name();

@@ -17,7 +17,7 @@ public class RegisterUserIT extends BasicIntegrationTest {
 
 		userApi.deleteUserAndAssert(TEST_USER_EMAIL);
 		userApi.registerUserAndAssert(TEST_USER_EMAIL);
-		//todo check that there is no users with tht email registered
+		//todo check that there is no users with this email registered
 	}
 
 	@Test
@@ -29,6 +29,6 @@ public class RegisterUserIT extends BasicIntegrationTest {
 //		thrown.expectMessage(""); HttpClientErrorException return message as "400 null"
 		userApi.registerUser(TEST_USER_EMAIL);
 	}
-	
+
 	//todo register not an email
 }

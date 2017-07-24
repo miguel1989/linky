@@ -2,16 +2,12 @@ package linky.api;
 
 import linky.dto.RegisterUserBean;
 import linky.dto.UserBean;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.nio.charset.StandardCharsets;
-
-import static linky.BasicIntegrationTest.TEST_ADMIN_EMAIL;
-import static linky.BasicIntegrationTest.TEST_PASSWORD;
+import static linky.BasicIntegrationTest.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -40,11 +36,8 @@ public class UserApi {
 	}
 
 	public ResponseEntity<UserBean> registerUser(String email) {
-		RegisterUserBean registerUserBean = new RegisterUserBean();
-		registerUserBean.email = email;
-		registerUserBean.password = TEST_PASSWORD;
-		registerUserBean.name = "test user";
-
+		RegisterUserBean registerUserBean = new RegisterUserBean(email, TEST_PASSWORD, "test user");
+		
 		HttpEntity<RegisterUserBean> request = new HttpEntity<>(registerUserBean);
 		return restTemplate.exchange(
 				localUrl + "/service/register",
@@ -67,13 +60,6 @@ public class UserApi {
 
 		assertThat(response.getStatusCode(), is(HttpStatus.OK));
 		assertThat(response.getBody(), is("ok"));
-	}
-	
-	private String buildBasicAuth(String email, String pass) {
-		String auth = email + ":" + pass;
-		byte[] encodedAuth = Base64.encodeBase64(
-				auth.getBytes(StandardCharsets.UTF_8));
-		return "Basic " + new String(encodedAuth);
 	}
 
 	public void useLocalUrl(String localUrl) {
