@@ -9,7 +9,7 @@ import linky.infra.Reaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Component
@@ -24,7 +24,7 @@ public class FindLinksForUserReaction implements Reaction<FindLinksForUser, Link
 
 	@Override
 	public LinksBean react(FindLinksForUser command) {
-		List<Link> links = linkDao.findByCreatedBy(command.userId());
+		Collection<Link> links = linkDao.findByCreatedBy(command.userId());
 		return new LinksBean(
 				links.stream().map(LinkBean::new).collect(Collectors.toList())
 		);

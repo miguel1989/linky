@@ -22,6 +22,10 @@ public abstract class BasicIntegrationTest {
 	@Autowired
 	protected UserApi userApi;
 
+	public static final String TEST_USER_EMAIL = "user@test.lv";
+	public static final String TEST_ADMIN_EMAIL = "admin@test.lv";
+	public static final String TEST_PASSWORD = "secret";
+
 	@Before
 	public void setup() {
 		//todo find a better way to pass port to API

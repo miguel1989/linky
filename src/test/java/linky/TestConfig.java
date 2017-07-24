@@ -11,7 +11,6 @@ public class TestConfig {
 	@Bean
 	@Profile(Profiles.TEST)
 	public RestTemplate restTemplate() {
-		System.out.println("TEST instance of RestTemplate");
 		return new RestTemplate();
 	}
 }

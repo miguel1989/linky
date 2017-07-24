@@ -15,7 +15,6 @@ public class Application {
 	@Bean
 	public RestTemplate restTemplate() {
 		//RestTemplateBuilder builder
-		System.out.println("NORMAL instance of RestTemplate");
 		return new RestTemplate();
 	}
 }
