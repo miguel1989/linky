@@ -9,41 +9,37 @@ import org.springframework.web.client.RestTemplate;
 
 import static linky.BasicIntegrationTest.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 @Component
-public class LinkApi extends BaseApi{
+public class LinkAdminApi extends BaseApi {
 
 	@Autowired
-	public LinkApi(RestTemplate restTemplate) {
+	public LinkAdminApi(RestTemplate restTemplate) {
 		super(restTemplate);
 	}
-
-	public LinkBean createLinkAndAssert(String name, String url) {
-		ResponseEntity<LinkBean> response = createLink(name, url);
-
+	
+	public LinkBean findLinkSuccessAndAssert(String id) {
+		ResponseEntity<LinkBean> response = findLink(id);
 		assertThat(response.getStatusCode(), is(HttpStatus.OK));
+
 		LinkBean linkBean = response.getBody();
 		assertThat(linkBean, is(notNullValue()));
-		assertThat(linkBean.id, is(notNullValue()));
-		assertThat(linkBean.url, is(url));
-		assertThat(linkBean.name, is(name));
-		assertThat(linkBean.visits, is(empty()));
-		//todo think about the visits
-
+		assertThat(linkBean.id, is(id));
 		return linkBean;
 	}
 
-	public ResponseEntity<LinkBean> createLink(String name, String url) {
+	public ResponseEntity<LinkBean> findLink(String id) {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.set(HttpHeaders.AUTHORIZATION,
-				buildBasicAuth(TEST_USER_EMAIL, TEST_PASSWORD));
+				buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
 
-		HttpEntity<CreateLinkBean> request = new HttpEntity<>(new CreateLinkBean(name, url), httpHeaders);
+		HttpEntity<CreateLinkBean> request = new HttpEntity<>(httpHeaders);
 
 		return restTemplate.exchange(
-				localUrl + "/api/link/create",
-				HttpMethod.POST,
+				localUrl + "/admin/link/" + id,
+				HttpMethod.GET,
 				request,
 				LinkBean.class);
 	}

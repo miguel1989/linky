@@ -1,5 +1,6 @@
 package linky;
 
+import linky.api.LinkAdminApi;
 import linky.api.LinkApi;
 import linky.api.UserApi;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -26,9 +27,12 @@ public abstract class BasicIntegrationTest {
 
 	@Autowired
 	protected UserApi userApi;
-	
+
 	@Autowired
 	protected LinkApi linkApi;
+
+	@Autowired
+	protected LinkAdminApi linkAdminApi;
 
 	public static final String TEST_USER_EMAIL = "user@test.lv";
 	public static final String TEST_ADMIN_EMAIL = "admin@test.lv";
@@ -39,6 +43,7 @@ public abstract class BasicIntegrationTest {
 		//todo find a better way to pass port to API
 		userApi.useLocalUrl(localUrl());
 		linkApi.useLocalUrl(localUrl());
+		linkAdminApi.useLocalUrl(localUrl());
 
 		userApi.deleteUserAndAssert(TEST_USER_EMAIL);
 	}

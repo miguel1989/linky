@@ -13,14 +13,11 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 @Component
-public class UserApi {
-
-	private String localUrl;
-	private RestTemplate restTemplate;
+public class UserApi extends BaseApi {
 
 	@Autowired
 	public UserApi(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
+		super(restTemplate);
 	}
 
 	public UserBean registerUserAndAssert(String email) {
@@ -37,7 +34,7 @@ public class UserApi {
 
 	public ResponseEntity<UserBean> registerUser(String email) {
 		RegisterUserBean registerUserBean = new RegisterUserBean(email, TEST_PASSWORD, "test user");
-		
+
 		HttpEntity<RegisterUserBean> request = new HttpEntity<>(registerUserBean);
 		return restTemplate.exchange(
 				localUrl + "/service/register",
@@ -48,7 +45,7 @@ public class UserApi {
 
 	public void deleteUserAndAssert(String email) {
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set(HttpHeaders.AUTHORIZATION, 
+		httpHeaders.set(HttpHeaders.AUTHORIZATION,
 				buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
 		HttpEntity<String> request = new HttpEntity<>(null, httpHeaders);
 
@@ -60,9 +57,5 @@ public class UserApi {
 
 		assertThat(response.getStatusCode(), is(HttpStatus.OK));
 		assertThat(response.getBody(), is("ok"));
-	}
-
-	public void useLocalUrl(String localUrl) {
-		this.localUrl = localUrl;
 	}
 }
