@@ -1,6 +1,6 @@
 package linky.reaction
 
-import linky.command.DeleteUser
+import linky.command.user.DeleteUser
 import linky.dao.LinkDao
 import linky.dao.UserDao
 import linky.domain.Link

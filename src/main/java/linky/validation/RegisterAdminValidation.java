@@ -1,6 +1,6 @@
 package linky.validation;
 
-import linky.command.RegisterAdmin;
+import linky.command.user.RegisterAdmin;
 import linky.dao.UserDao;
 import linky.exception.ValidationFailed;
 import linky.infra.Validation;

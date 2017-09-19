@@ -1,6 +1,6 @@
 package linky.controller;
 
-import linky.command.CreateLink;
+import linky.command.link.CreateLink;
 import linky.dto.CreateLinkBean;
 import linky.dto.LinkBean;
 import linky.infra.PipedNow;

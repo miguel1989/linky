@@ -1,6 +1,6 @@
 package linky.controller.admin;
 
-import linky.command.DeleteUser;
+import linky.command.user.DeleteUser;
 import linky.infra.PipedNow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;

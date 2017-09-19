@@ -1,6 +1,6 @@
 package linky.controller;
 
-import linky.command.VisitLink;
+import linky.command.link.VisitLink;
 import linky.dto.VisitLinkBean;
 import linky.infra.PipedNow;
 import org.springframework.beans.factory.annotation.Autowired;

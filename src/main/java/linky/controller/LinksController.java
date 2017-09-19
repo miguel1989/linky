@@ -1,6 +1,6 @@
 package linky.controller;
 
-import linky.command.FindLinksForUser;
+import linky.command.link.FindLinksForUser;
 import linky.dto.LinkBean;
 import linky.infra.PipedNow;
 import org.springframework.beans.factory.annotation.Autowired;

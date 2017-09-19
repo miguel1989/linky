@@ -1,6 +1,6 @@
 package linky;
 
-import linky.command.RegisterAdmin;
+import linky.command.user.RegisterAdmin;
 import linky.infra.PipedNow;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;

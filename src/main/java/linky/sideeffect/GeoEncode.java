@@ -7,6 +7,8 @@ import linky.domain.Visit;
 import linky.event.NewVisitOccurred;
 import linky.infra.SideEffect;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,8 @@ import java.io.IOException;
 @Component
 public class GeoEncode implements SideEffect<NewVisitOccurred> {
 
+	private static final Logger logger = LoggerFactory.getLogger(GeoEncode.class);
+
 	private final VisitDao visitDao;
 	private final RestTemplate restTemplate;
 	private final ObjectMapper mapper = new ObjectMapper();
@@ -24,18 +28,21 @@ public class GeoEncode implements SideEffect<NewVisitOccurred> {
 	private static final String JSON_COUNTRY_NAME = "country_name";
 	private static final String NO_COUNTRY = "No country =(";
 
+	//todo maybe for TEST use mock version to not to connect to real world url
 	@Autowired
 	public GeoEncode(VisitDao visitDao, RestTemplate restTemplate) {
 		this.visitDao = visitDao;
-		this.restTemplate = restTemplate;
+		this.restTemplate = restTemplate; 
 	}
 
 	@Override
 	public void occur(NewVisitOccurred event) {
+		logger.info("NewVisitOccurred");
 		Visit visit = visitDao.findOne(event.visitId());
 
 		//just silent return if the visit is not found. todo -> think here
 		if (visit == null) {
+			logger.warn("Incorrect visit");
 			return;
 		}
 

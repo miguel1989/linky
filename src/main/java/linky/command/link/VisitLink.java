@@ -1,4 +1,4 @@
-package linky.command;
+package linky.command.link;
 
 import linky.dto.VisitLinkBean;
 import linky.infra.Command;

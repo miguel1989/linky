@@ -1,4 +1,4 @@
-package linky.command;
+package linky.command.user;
 
 import linky.infra.Command;
 

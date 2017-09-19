@@ -1,6 +1,6 @@
 package linky.reaction
 
-import linky.command.RegisterAdmin
+import linky.command.user.RegisterAdmin
 import linky.dao.UserDao
 import linky.domain.User
 import linky.dto.AuthUserBean

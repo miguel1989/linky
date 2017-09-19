@@ -1,6 +1,6 @@
 package linky.reaction;
 
-import linky.command.VisitLink;
+import linky.command.link.VisitLink;
 import linky.dao.LinkDao;
 import linky.domain.Link;
 import linky.domain.Visit;
@@ -21,20 +21,20 @@ public class VisitLinkReaction implements Reaction<VisitLink, VisitLinkBean> {
 	@Autowired
 	public VisitLinkReaction(LinkDao linkDao) {
 		this.linkDao = linkDao;
-	}	
-	
+	}
+
 	@Override
 	public VisitLinkBean react(VisitLink command) {
 		Optional<Link> optionalLink = linkDao.findByName(command.name());
 		if (!optionalLink.isPresent()) {
 			return new VisitLinkBean(VisitLink.NOT_FOUND);
 		}
-		
+
 		Link link = optionalLink.get();
 		Visit visit = link.newVisit(command.ip());
 
 		DomainEvents.ephemeral().publish(new NewVisitOccurred(visit.id(), command.ip()));
-		
+
 		return new VisitLinkBean(link.url());
 	}
 }

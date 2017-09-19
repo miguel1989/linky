@@ -1,6 +1,6 @@
 package linky.validation
 
-import linky.command.CreateLink
+import linky.command.link.CreateLink
 import linky.dao.UserDao
 import linky.domain.User
 import linky.exception.ValidationFailed

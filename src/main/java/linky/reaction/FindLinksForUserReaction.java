@@ -1,6 +1,6 @@
 package linky.reaction;
 
-import linky.command.FindLinksForUser;
+import linky.command.link.FindLinksForUser;
 import linky.dao.LinkDao;
 import linky.domain.Link;
 import linky.dto.LinkBean;

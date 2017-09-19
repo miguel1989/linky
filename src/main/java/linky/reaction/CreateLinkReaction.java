@@ -1,6 +1,6 @@
 package linky.reaction;
 
-import linky.command.CreateLink;
+import linky.command.link.CreateLink;
 import linky.dao.LinkDao;
 import linky.domain.Link;
 import linky.dto.LinkBean;

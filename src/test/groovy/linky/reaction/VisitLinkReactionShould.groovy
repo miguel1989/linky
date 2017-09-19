@@ -1,6 +1,6 @@
 package linky.reaction
 
-import linky.command.VisitLink
+import linky.command.link.VisitLink
 import linky.dao.LinkDao
 import linky.domain.Link
 import linky.dto.VisitLinkBean

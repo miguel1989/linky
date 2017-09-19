@@ -1,7 +1,7 @@
 package linky.validation;
 
 import com.google.common.base.Strings;
-import linky.command.CreateLink;
+import linky.command.link.CreateLink;
 import linky.dao.UserDao;
 import linky.exception.ValidationFailed;
 import linky.infra.Validation;

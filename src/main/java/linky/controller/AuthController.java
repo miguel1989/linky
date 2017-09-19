@@ -1,6 +1,6 @@
 package linky.controller;
 
-import linky.command.RegisterUser;
+import linky.command.user.RegisterUser;
 import linky.dto.AuthUserBean;
 import linky.dto.RegisterUserBean;
 import linky.dto.UserBean;
