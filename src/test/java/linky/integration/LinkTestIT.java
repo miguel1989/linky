@@ -33,13 +33,13 @@ public class LinkTestIT extends BasicIntegrationTest {
 	@Test
 	public void visitLink() throws Exception {
 		userApi.registerUserAndAssert(TEST_USER_EMAIL);
-		
+
 		LinkBean linkBean = linkApi.createLinkAndAssert("gogle", "www.google.lv");
-		
+
 		mockMvc.perform(get(new URI(localUrl() + "/gogle")))
 //				.andExpect(status().isOk())
 				.andExpect(redirectedUrl("www.google.lv"));
-		
+
 		linkBean = linkAdminApi.findLinkSuccessAndAssert(linkBean.id);
 		assertThat(linkBean.name, is("gogle"));
 		assertThat(linkBean.url, is("www.google.lv"));

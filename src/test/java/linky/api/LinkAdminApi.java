@@ -35,12 +35,26 @@ public class LinkAdminApi extends BaseApi {
 		httpHeaders.set(HttpHeaders.AUTHORIZATION,
 				buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
 
-		HttpEntity<CreateLinkBean> request = new HttpEntity<>(httpHeaders);
+		HttpEntity<String> request = new HttpEntity<>(httpHeaders);
 
 		return restTemplate.exchange(
 				localUrl + "/admin/link/" + id,
 				HttpMethod.GET,
 				request,
 				LinkBean.class);
+	}
+
+	public ResponseEntity<String> findLinks() { //Page<LinkBeanSimple>
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set(HttpHeaders.AUTHORIZATION,
+				buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
+
+		HttpEntity<CreateLinkBean> request = new HttpEntity<>(httpHeaders);
+
+		return restTemplate.exchange(
+				localUrl + "/admin/links/",
+				HttpMethod.GET,
+				request,
+				String.class);
 	}
 }
