@@ -1,144 +1,28 @@
 package linky.validation
 
 import linky.command.user.RegisterAdmin
-import linky.dao.UserDao
-import linky.domain.User
 import linky.exception.ValidationFailed
-import spock.lang.Ignore
 import spock.lang.Specification
 
 class RegisterAdminValidationShould extends Specification {
 
 	RegisterAdminValidation registerAdminValidation
-	UserDao userDao
+	RegisterCommonValidation registerCommonValidation
 
 	void setup() {
-		userDao = Mock(UserDao)
-		registerAdminValidation = new RegisterAdminValidation(userDao)
-	}
-	
-	def 'null command'() {
-		when:
-		registerAdminValidation.validate(null)
-
-		then:
-		def ex = thrown(ValidationFailed)
-		ex.message == 'Command can not be null'
-	}
-	
-	def 'null email'() {
-		when:
-		registerAdminValidation.validate(new RegisterAdmin(null, 'secret', 'batman'))
-
-		then:
-		def ex = thrown(ValidationFailed)
-		ex.message == 'Email is empty'
+		registerCommonValidation = Mock(RegisterCommonValidation)
+		registerAdminValidation = new RegisterAdminValidation(registerCommonValidation)
 	}
 
-	def 'empty email'() {
-		when:
-		registerAdminValidation.validate(new RegisterAdmin('', 'secret', 'batman'))
-
-		then:
-		def ex = thrown(ValidationFailed)
-		ex.message == 'Email is empty'
-	}
-
-	def 'empty email with spaces'() {
-		when:
-		registerAdminValidation.validate(new RegisterAdmin('  ', 'secret', 'batman'))
-
-		then:
-		def ex = thrown(ValidationFailed)
-		ex.message == 'Email is empty'
-	}
-
-	def 'email exists'() {
+	def 'exception occurred'() {
 		setup:
-		userDao.findByEmail('admin@linky.lv') >> Optional.of(new User())
-		
+		registerCommonValidation.validate(_) >> { throw new ValidationFailed('something wrong') }
+
 		when:
-		registerAdminValidation.validate(new RegisterAdmin('admin@linky.lv', 'secret', 'batman'))
+		registerAdminValidation.validate(new RegisterAdmin('test@linky.lv', 'secret', 'batman'))
 
 		then:
 		def ex = thrown(ValidationFailed)
-		ex.message == 'Email already exists'
+		ex.message == 'something wrong'
 	}
-
-	@Ignore
-	def 'not an email'() {
-		setup:
-		userDao.findByEmail('crap') >> Optional.empty()
-
-		when:
-		registerAdminValidation.validate(new RegisterAdmin('crap', 'secret', 'batman'))
-
-		then:
-		def ex = thrown(ValidationFailed)
-		ex.message == 'Not an email'
-	}
-
-	def 'null password'() {
-		setup:
-		userDao.findByEmail('admin@linky.lv') >> Optional.ofNullable(null)
-
-		when:
-		registerAdminValidation.validate(new RegisterAdmin('admin@linky.lv', null, 'batman'))
-
-		then:
-		def ex = thrown(ValidationFailed)
-		ex.message == 'Password is empty'
-	}
-
-	def 'empty password'() {
-		setup:
-		userDao.findByEmail('admin@linky.lv') >> Optional.ofNullable(null)
-
-		when:
-		registerAdminValidation.validate(new RegisterAdmin('admin@linky.lv', '', 'batman'))
-
-		then:
-		def ex = thrown(ValidationFailed)
-		ex.message == 'Password is empty'
-	}
-
-	def 'empty password with spaces'() {
-		setup:
-		userDao.findByEmail('admin@linky.lv') >> Optional.ofNullable(null)
-
-		when:
-		registerAdminValidation.validate(new RegisterAdmin('admin@linky.lv', '   ', 'batman'))
-
-		then:
-		def ex = thrown(ValidationFailed)
-		ex.message == 'Password is empty'
-	}
-
-	@Ignore
-	def 'password is too short'() {
-		setup:
-		userDao.findByEmail('admin@linky.lv') >> Optional.ofNullable(null)
-
-		when:
-		registerAdminValidation.validate(new RegisterAdmin('admin@linky.lv', 'short', 'batman'))
-
-		then:
-		def ex = thrown(ValidationFailed)
-		ex.message == 'Password is too short'
-	}
-
-	@Ignore
-	def 'password is too simple'() {
-		setup:
-		userDao.findByEmail('admin@linky.lv') >> Optional.ofNullable(null)
-
-		when:
-		registerAdminValidation.validate(new RegisterAdmin('admin@linky.lv', 'qwertyasd', 'batman'))
-
-		then:
-		def ex = thrown(ValidationFailed)
-		ex.message == 'Password is too simple'
-	}
-	
-	//todo msg "password already exists"!
 }

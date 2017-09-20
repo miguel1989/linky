@@ -1,9 +1,11 @@
 package linky.integration;
 
 import linky.BasicIntegrationTest;
+import linky.dto.UserBean;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 
 public class RegisterUserIT extends BasicIntegrationTest {
@@ -26,5 +28,10 @@ public class RegisterUserIT extends BasicIntegrationTest {
 		userApi.registerUser(TEST_USER_EMAIL);
 	}
 
-	//todo register not an email
+	@Test
+	public void notAnEmail() {
+		//todo investigate how to check the message...
+		thrown.expect(HttpClientErrorException.class);
+		ResponseEntity<UserBean> response = userApi.registerUser("something");
+	}
 }
