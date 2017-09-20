@@ -1,5 +1,6 @@
 package linky.validation.object;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static java.util.regex.Pattern.compile;
@@ -20,6 +21,9 @@ public class Email {
 	}
 
 	public boolean isValid() {
+		if (Objects.isNull(text)) {
+			return false;
+		}
 		return RFC_5322.asPredicate().test(text);
 	}
 

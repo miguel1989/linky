@@ -23,10 +23,6 @@ public class RegisterCommonValidation {
 			throw new ValidationFailed("Command can not be null");
 		}
 
-		if (StringUtils.isBlank(command.email())) {
-			throw new ValidationFailed("Not a valid e-mail");
-		}
-		
 		if (!new Email(command.email()).isValid()) {
 			throw new ValidationFailed("Not a valid e-mail");
 		}
