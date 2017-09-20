@@ -2,6 +2,8 @@ package linky.integration;
 
 import linky.BasicIntegrationTest;
 import linky.dto.LinkBean;
+import linky.dto.LinkBeanSimple;
+import linky.dto.RestResponsePage;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +34,6 @@ public class LinkTestIT extends BasicIntegrationTest {
 
 	@Test
 	public void visitLink() throws Exception {
-		userApi.registerUserAndAssert(TEST_USER_EMAIL);
-
 		LinkBean linkBean = linkApi.createLinkAndAssert("gogle", "www.google.lv");
 
 		mockMvc.perform(get(new URI(localUrl() + "/gogle")))
@@ -44,5 +44,22 @@ public class LinkTestIT extends BasicIntegrationTest {
 		assertThat(linkBean.name, is("gogle"));
 		assertThat(linkBean.url, is("www.google.lv"));
 		assertThat(linkBean.visits, hasSize(1));
+	}
+
+	@Test
+	public void adminFindLinks() throws Exception {
+		linkApi.createLinkAndAssert("1gogle1", "www.google.lv");
+		linkApi.createLinkAndAssert("2gogle2", "www.google2.lv");
+		linkApi.createLinkAndAssert("yaho", "www.yahoo.lv");
+		linkApi.createLinkAndAssert("yaho5", "www.yahoo.lv");
+
+		RestResponsePage<LinkBeanSimple> result = linkAdminApi.findLinks("gogle", null).getBody();
+		assertThat(result.getContent(), hasSize(2));
+
+		result = linkAdminApi.findLinks("aho5", null).getBody();
+		assertThat(result.getContent(), hasSize(1));
+
+		result = linkAdminApi.findLinks(null, "www.yahoo.lv").getBody();
+		assertThat(result.getContent(), hasSize(2));
 	}
 }

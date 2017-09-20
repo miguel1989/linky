@@ -46,6 +46,7 @@ public abstract class BasicIntegrationTest {
 		linkAdminApi.useLocalUrl(localUrl());
 
 		userApi.deleteUserAndAssert(TEST_USER_EMAIL);
+		userApi.registerUserAndAssert(TEST_USER_EMAIL);
 	}
 
 	@After
