@@ -28,8 +28,8 @@ class DeleteUserReactionShould extends Specification {
 		
 		then:
 		0 * linkDao.findByCreatedBy(_) 
-		0 * linkDao.delete(_) 
-		0 * linkDao.delete(_) 
+		0 * linkDao.deleteAll(_) 
+		0 * userDao.delete(_) 
 	}
 
 	def 'existing user'() {
@@ -41,7 +41,7 @@ class DeleteUserReactionShould extends Specification {
 		deleteUserReaction.react(new DeleteUser('test@linky.lv'))
 		
 		then:
-		1 * linkDao.delete(_ as List<Link>)
+		1 * linkDao.deleteAll(_ as List<Link>)
 		1 * userDao.delete(_ as User)
 	}
 }

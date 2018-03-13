@@ -30,7 +30,7 @@ public class DeleteUserReaction implements Reaction<DeleteUser, Command.R.Void> 
 		Optional<User> optionalUser = userDao.findByEmail(command.email());
 		optionalUser.ifPresent(user -> {
 			List<Link> links = linkDao.findByCreatedBy(user.id().toString());
-			linkDao.delete(links);
+			linkDao.deleteAll(links);
 			userDao.delete(user);
 		});
 		return new Command.R.Void();

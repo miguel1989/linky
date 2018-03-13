@@ -61,7 +61,7 @@ class CreateLinkValidationShould extends Specification {
 	def 'user does not exist'() {
 		setup:
 		String uuid = UUID.randomUUID().toString()
-		userDao.findOne(UUID.fromString(uuid)) >> null
+		userDao.findById(UUID.fromString(uuid)) >> Optional.empty()
 
 		when:
 		createLinkValidation.validate(new CreateLink(uuid, 'gogle', 'www.gogle.lv'))
@@ -74,7 +74,7 @@ class CreateLinkValidationShould extends Specification {
 	def 'empty name'() {
 		setup:
 		String uuid = UUID.randomUUID().toString()
-		userDao.findOne(UUID.fromString(uuid)) >> new User()
+		userDao.findById(UUID.fromString(uuid)) >> Optional.of(new User())
 
 		when:
 		createLinkValidation.validate(new CreateLink(uuid, '', 'www.gogle.lv'))
@@ -87,7 +87,7 @@ class CreateLinkValidationShould extends Specification {
 	def 'restricted chars'() {
 		setup:
 		String uuid = UUID.randomUUID().toString()
-		userDao.findOne(UUID.fromString(uuid)) >> new User()
+		userDao.findById(UUID.fromString(uuid)) >> Optional.of(new User())
 
 		when:
 		createLinkValidation.validate(new CreateLink(uuid, 'abc/qwe!', 'www.gogle.lv'))
@@ -100,7 +100,7 @@ class CreateLinkValidationShould extends Specification {
 	def 'abuse'() {
 		setup:
 		String uuid = UUID.randomUUID().toString()
-		userDao.findOne(UUID.fromString(uuid)) >> new User()
+		userDao.findById(UUID.fromString(uuid)) >> Optional.of(new User())
 		abuseLinkName.isOk('niger') >> false
 
 		when:
@@ -114,7 +114,7 @@ class CreateLinkValidationShould extends Specification {
 	def 'not unique name'() {
 		setup:
 		String uuid = UUID.randomUUID().toString()
-		userDao.findOne(UUID.fromString(uuid)) >> new User()
+		userDao.findById(UUID.fromString(uuid)) >> Optional.of(new User())
 		abuseLinkName.isOk('google') >> true
 		uniqueLinkName.guaranteed('google') >> false
 

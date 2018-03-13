@@ -105,7 +105,7 @@ public class LinkDaoTest {
 			);
 		}
 		
-		Pageable pageable = new PageRequest(0, 5);
+		Pageable pageable = PageRequest.of(0, 5);
 		Page<Link> pageLinks = linkDao.findAll(LinkSpecification.byNameOrUrl("%NAME%", "%face%"), pageable);
 		assertThat(pageLinks.getTotalElements(), is(10L));
 		assertThat(pageLinks.getContent(), hasSize(5));

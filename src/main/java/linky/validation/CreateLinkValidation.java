@@ -39,7 +39,7 @@ public class CreateLinkValidation implements Validation<CreateLink> {
 			throw new ValidationFailed("UserId is empty");
 		}
 
-		if (userDao.findOne(UUID.fromString(command.userId())) == null) {
+		if (!userDao.findById(UUID.fromString(command.userId())).isPresent()) {
 			throw new ValidationFailed("User does not exist");
 		}
 

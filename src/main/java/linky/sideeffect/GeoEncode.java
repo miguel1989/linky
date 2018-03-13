@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 public class GeoEncode implements SideEffect<NewVisitOccurred> {
@@ -38,13 +39,14 @@ public class GeoEncode implements SideEffect<NewVisitOccurred> {
 	@Override
 	public void occur(NewVisitOccurred event) {
 		logger.info("NewVisitOccurred");
-		Visit visit = visitDao.findOne(event.visitId());
+		Optional<Visit> optVisit = visitDao.findById(event.visitId());
 
 		//just silent return if the visit is not found. todo -> think here
-		if (visit == null) {
+		if (!optVisit.isPresent()) {
 			logger.warn("Incorrect visit");
 			return;
 		}
+		Visit visit = optVisit.get();
 
 		ResponseEntity<String> response = restTemplate.getForEntity(REQUEST_URL + event.ip(), String.class);
 		try {

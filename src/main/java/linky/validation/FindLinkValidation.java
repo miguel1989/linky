@@ -9,6 +9,7 @@ import linky.infra.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -31,8 +32,8 @@ public class FindLinkValidation implements Validation<FindLink> {
 			throw new ValidationFailed("Link id is empty");
 		}
 
-		Link link = linkDao.findOne(UUID.fromString(command.id()));
-		if (link == null) {
+		Optional<Link> optLink = linkDao.findById(UUID.fromString(command.id()));
+		if (!optLink.isPresent()) {
 			throw new ValidationFailed("Link not found");
 		}
 	}

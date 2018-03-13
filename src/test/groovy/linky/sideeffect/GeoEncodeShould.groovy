@@ -22,7 +22,7 @@ class GeoEncodeShould extends Specification {
 	
 	def 'wrong visit id'() {
 		setup:
-		visitDao.findOne(_) >> null
+		visitDao.findById(_) >> Optional.empty()
 		
 		when:
 		geoEncode.occur(new NewVisitOccurred(UUID.randomUUID(), '127.1.1.1'))
@@ -34,7 +34,7 @@ class GeoEncodeShould extends Specification {
 	def 'empty json response'() {
 		setup:
 		Visit visit = new Visit()
-		visitDao.findOne(_) >> visit
+		visitDao.findById(_) >> Optional.of(visit)
 		restTemplate.getForEntity(_, _) >> new ResponseEntity<>("{}", HttpStatus.OK)
 		
 		when:
@@ -48,7 +48,7 @@ class GeoEncodeShould extends Specification {
 	def 'json response with empty country'() {
 		setup:
 		Visit visit = new Visit()
-		visitDao.findOne(_) >> visit
+		visitDao.findById(_) >> Optional.of(visit)
 		restTemplate.getForEntity(_, _) >> new ResponseEntity<>('{"country_name":""}', HttpStatus.OK)
 
 		when:
@@ -62,7 +62,7 @@ class GeoEncodeShould extends Specification {
 	def 'normal json response'() {
 		setup:
 		Visit visit = new Visit()
-		visitDao.findOne(_) >> visit
+		visitDao.findById(_) >> Optional.of(visit)
 		String jsonResponse = '{"ip":"192.30.253.113","country_code":"US","country_name":"United States","region_code":"CA","region_name":"California","city":"San Francisco","zip_code":"94107","time_zone":"America/Los_Angeles","latitude":37.7697,"longitude":-122.3933,"metro_code":807}'
 		restTemplate.getForEntity(_, _) >> new ResponseEntity<>(jsonResponse, HttpStatus.OK)
 
@@ -74,5 +74,5 @@ class GeoEncodeShould extends Specification {
 		visit.data() == jsonResponse
 	}
 	
-	//todo test when HTPP STATUS is not OK
+	//todo test when HTTP STATUS is not OK
 }

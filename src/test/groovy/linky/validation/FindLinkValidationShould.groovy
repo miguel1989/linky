@@ -54,7 +54,7 @@ class FindLinkValidationShould extends Specification {
 	def 'link not found'() {
 		setup:
 		String uuid = UUID.randomUUID().toString()
-		linkDao.findOne(UUID.fromString(uuid)) >> null
+		linkDao.findById(UUID.fromString(uuid)) >> Optional.empty()
 
 		when:
 		findLinkValidation.validate(new FindLink(uuid))
