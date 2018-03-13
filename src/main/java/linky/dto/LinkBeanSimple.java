@@ -17,6 +17,6 @@ public class LinkBeanSimple implements Command.R {
 		this.id = link.id().toString();
 		this.name = link.name();
 		this.url = link.url();
-		this.visitCount = link.visits().stream().count();
+		this.visitCount = link.visits().size();
 	}
 }

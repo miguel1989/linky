@@ -7,10 +7,10 @@ import linky.dao.specification.LinkSpecification;
 import linky.domain.Link;
 import linky.dto.LinkBeanSimple;
 import linky.dto.PageLinksBeanSimple;
+import linky.dto.RestResponsePage;
 import linky.infra.Reaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public class FindLinksReaction implements Reaction<FindLinks, PageLinksBeanSimple> {
 
 	private final LinkDao linkDao;
-	
 	private static final String SQL_PERCENT = "%";
 
 	@Autowired
@@ -33,14 +32,13 @@ public class FindLinksReaction implements Reaction<FindLinks, PageLinksBeanSimpl
 
 	@Override
 	public PageLinksBeanSimple react(FindLinks command) {
-		Pageable pageable = new PageRequest(command.page(), command.size());
+		Pageable pageable = PageRequest.of(command.page(), command.size());
 		//todo maybe implement case insensitive search
 		String nameSearch = command.name();
 		String urlSearch = command.url();
 		
 		if (Strings.isNullOrEmpty(nameSearch) && Strings.isNullOrEmpty(urlSearch)) {
-			Page<LinkBeanSimple> pageLinks = new PageImpl<>(new ArrayList<>(), pageable, 0);
-			return new PageLinksBeanSimple(pageLinks);
+			return new PageLinksBeanSimple(new RestResponsePage<>(new ArrayList<>(), pageable, 0));
 		}
 		
 		if (!Strings.isNullOrEmpty(nameSearch)) {
@@ -53,7 +51,7 @@ public class FindLinksReaction implements Reaction<FindLinks, PageLinksBeanSimpl
 		Page<Link> pageLinks = linkDao.findAll(LinkSpecification.byNameOrUrl(nameSearch, urlSearch), pageable);
 		List<LinkBeanSimple> linkBeanSimpleList = pageLinks.getContent().stream()
 				.map(LinkBeanSimple::new).collect(Collectors.toList());
-		Page<LinkBeanSimple> pageLinksSimple = new PageImpl<>(linkBeanSimpleList, pageable, pageLinks.getTotalElements());
+		RestResponsePage<LinkBeanSimple> pageLinksSimple = new RestResponsePage<>(linkBeanSimpleList, pageable, pageLinks.getTotalElements());
 		return new PageLinksBeanSimple(pageLinksSimple);
 	}
 }
