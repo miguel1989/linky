@@ -16,7 +16,7 @@ public class AbuseLinkName implements LinkName.Abuseness {
 	@Override
 	public boolean isOk(String text) {
 		String lowerText = text.toLowerCase();
-		return reservedWords.stream().filter(lowerText::equals).count() == 0
-				&& abuseWords.stream().filter(lowerText::contains).count() == 0;
+		return reservedWords.stream().noneMatch(lowerText::equals)
+				&& abuseWords.stream().noneMatch(lowerText::contains);
 	}
 }

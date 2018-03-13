@@ -114,15 +114,77 @@ class CreateLinkValidationShould extends Specification {
 	def 'not unique name'() {
 		setup:
 		String uuid = UUID.randomUUID().toString()
+		CreateLink command = new CreateLink(uuid, "google", "gogle.lv")
 		userDao.findById(UUID.fromString(uuid)) >> Optional.of(new User())
-		abuseLinkName.isOk('google') >> true
-		uniqueLinkName.guaranteed('google') >> false
+		abuseLinkName.isOk(command.name()) >> true
+		uniqueLinkName.guaranteed(command.name()) >> false
 
 		when:
-		createLinkValidation.validate(new CreateLink(uuid, 'google', 'www.gogle.lv'))
+		createLinkValidation.validate(command)
 
 		then:
 		def ex = thrown(ValidationFailed)
 		ex.message == 'Link name is already taken'
+	}
+
+	def 'not an url'() {
+		setup:
+		String uuid = UUID.randomUUID().toString()
+		CreateLink command = new CreateLink(uuid, "google", "som#!@ething%^&*")
+		userDao.findById(UUID.fromString(uuid)) >> Optional.of(new User())
+		abuseLinkName.isOk(command.name()) >> true
+		uniqueLinkName.guaranteed(command.name()) >> true
+
+		when:
+		createLinkValidation.validate(command)
+
+		then:
+		def ex = thrown(ValidationFailed)
+		ex.message == 'Incorrect link url'
+	}
+
+	def 'correct command no protocol in url'() {
+		setup:
+		String uuid = UUID.randomUUID().toString()
+		CreateLink command = new CreateLink(uuid, "google", "www.gogle.lv")
+		userDao.findById(UUID.fromString(uuid)) >> Optional.of(new User())
+		abuseLinkName.isOk(command.name()) >> true
+		uniqueLinkName.guaranteed(command.name()) >> true
+
+		when:
+		createLinkValidation.validate(command)
+
+		then:
+		noExceptionThrown()
+	}
+
+	def 'correct command ftp protocol'() {
+		setup:
+		String uuid = UUID.randomUUID().toString()
+		CreateLink command = new CreateLink(uuid, "google", "ftp://www.gogle.lv")
+		userDao.findById(UUID.fromString(uuid)) >> Optional.of(new User())
+		abuseLinkName.isOk(command.name()) >> true
+		uniqueLinkName.guaranteed(command.name()) >> true
+
+		when:
+		createLinkValidation.validate(command)
+
+		then:
+		noExceptionThrown()
+	}
+
+	def 'correct command https protocol'() {
+		setup:
+		String uuid = UUID.randomUUID().toString()
+		CreateLink command = new CreateLink(uuid, "google", "https://www.gogle.lv")
+		userDao.findById(UUID.fromString(uuid)) >> Optional.of(new User())
+		abuseLinkName.isOk(command.name()) >> true
+		uniqueLinkName.guaranteed(command.name()) >> true
+
+		when:
+		createLinkValidation.validate(command)
+
+		then:
+		noExceptionThrown()
 	}
 }

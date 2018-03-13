@@ -7,6 +7,7 @@ import linky.exception.ValidationFailed;
 import linky.infra.Validation;
 import linky.validation.object.AbuseLinkName;
 import linky.validation.object.LinkName;
+import linky.validation.object.LinkUrl;
 import linky.validation.object.UniqueLinkName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -55,6 +56,8 @@ public class CreateLinkValidation implements Validation<CreateLink> {
 			throw new ValidationFailed("Link name is already taken");
 		}
 		
-		//todo validate URL
+		if (!new LinkUrl(command.url()).isValid()) {
+			throw new ValidationFailed("Incorrect link url");
+		}
 	}
 }
