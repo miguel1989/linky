@@ -1,14 +1,12 @@
 package linky.controller;
 
 import linky.command.link.CreateLink;
+import linky.command.link.FindLink;
 import linky.dto.CreateLinkBean;
 import linky.dto.LinkBean;
 import linky.infra.PipedNow;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/link")
@@ -16,6 +14,11 @@ public class LinkController {
 
 	@Autowired
 	private PipedNow pipedNow;
+
+	@RequestMapping(method = RequestMethod.GET, value = "/{id:.*}")
+	public LinkBean link(@PathVariable(value = "id") String id) {
+		return new FindLink(id).execute(pipedNow);
+	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/create")
 	public LinkBean create(@RequestBody CreateLinkBean createLinkBean) {

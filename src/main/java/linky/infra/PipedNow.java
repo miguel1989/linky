@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @Component
 public class PipedNow implements Now {
-
 	private final Reactions reactions;
 	private final Validations validations;
 	private final PlatformTransactionManager txManager;
@@ -25,11 +24,7 @@ public class PipedNow implements Now {
 
 	@Override
 	public <C extends Command<R>, R extends Command.R> R execute(C command) {
-		Now piped =
-				new Loggable(
-						new Transactional(
-								new Validating(
-										new Reacting())));
+		Now piped = new Loggable(new Transactional(new Reacting()));
 		return piped.execute(command);
 	}
 
@@ -65,26 +60,11 @@ public class PipedNow implements Now {
 		}
 	}
 
-	private class Validating implements Now {
-
-		private final Now origin;
-
-		Validating(Now origin) {
-			this.origin = origin;
-		}
-
+	private class Reacting implements Now {
 		@Override
 		public <C extends Command<R>, R extends Command.R> R execute(C command) {
 			Optional<Validation<C>> optionalValidation = validations.byCommand(command);
 			optionalValidation.ifPresent(validation -> validation.validate(command));
-			return origin.execute(command);
-		}
-	}
-
-	private class Reacting implements Now {
-
-		@Override
-		public <C extends Command<R>, R extends Command.R> R execute(C command) {
 			Reaction<C, R> reaction = reactions.byCommand(command);
 			return reaction.react(command);
 		}

@@ -2,6 +2,7 @@ package linky.validation
 
 import linky.command.link.FindLink
 import linky.dao.LinkDao
+import linky.domain.Link
 import linky.exception.ValidationFailed
 import spock.lang.Specification
 
@@ -62,5 +63,17 @@ class FindLinkValidationShould extends Specification {
 		then:
 		def ex = thrown(ValidationFailed)
 		ex.message == 'Link not found'
+	}
+
+	def 'everything is ok'() {
+		setup:
+		String uuid = UUID.randomUUID().toString()
+		linkDao.findById(UUID.fromString(uuid)) >> Optional.of(new Link())
+
+		when:
+		findLinkValidation.validate(new FindLink(uuid))
+
+		then:
+		noExceptionThrown()
 	}
 }
