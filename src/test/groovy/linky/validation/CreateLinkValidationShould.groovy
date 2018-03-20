@@ -22,15 +22,6 @@ class CreateLinkValidationShould extends Specification {
 		createLinkValidation = new CreateLinkValidation(userDao, abuseLinkName, uniqueLinkName)
 	}
 
-	def 'null command'() {
-		when:
-		createLinkValidation.validate(null)
-
-		then:
-		def ex = thrown(ValidationFailed)
-		ex.message == 'Command can not be null'
-	}
-
 	def 'null user id'() {
 		when:
 		createLinkValidation.validate(new CreateLink(null, 'gogle', 'www.gogle.lv'))

@@ -16,15 +16,6 @@ class DeleteLinkValidationShould extends Specification {
         deleteLinkValidation = new DeleteLinkValidation(linkDao)
     }
 
-    def 'null command'() {
-        when:
-        deleteLinkValidation.validate(null)
-
-        then:
-        def ex = thrown(ValidationFailed)
-        ex.message == 'Command can not be null'
-    }
-
     def 'empty id'() {
         when:
         deleteLinkValidation.validate(new DeleteLink(''))

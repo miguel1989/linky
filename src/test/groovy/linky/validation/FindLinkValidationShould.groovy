@@ -16,15 +16,6 @@ class FindLinkValidationShould extends Specification {
 		findLinkValidation = new FindLinkValidation(linkDao)
 	}
 
-	def 'null command'() {
-		when:
-		findLinkValidation.validate(null)
-
-		then:
-		def ex = thrown(ValidationFailed)
-		ex.message == 'Command can not be null'
-	}
-
 	def 'empty id'() {
 		when:
 		findLinkValidation.validate(new FindLink(''))

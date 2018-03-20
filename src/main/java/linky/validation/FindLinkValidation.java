@@ -24,10 +24,6 @@ public class FindLinkValidation implements Validation<FindLink> {
 
 	@Override
 	public void validate(FindLink command) {
-		if (command == null) {
-			throw new ValidationFailed("Command can not be null");
-		}
-
 		if (Strings.isNullOrEmpty(command.id())) {
 			throw new ValidationFailed("Link id is empty");
 		}

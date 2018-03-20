@@ -32,10 +32,6 @@ public class CreateLinkValidation implements Validation<CreateLink> {
 
 	@Override
 	public void validate(CreateLink command) {
-		if (command == null) {
-			throw new ValidationFailed("Command can not be null");
-		}
-
 		if (Strings.isNullOrEmpty(command.userId())) {
 			throw new ValidationFailed("UserId is empty");
 		}

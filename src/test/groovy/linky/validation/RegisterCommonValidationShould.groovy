@@ -18,15 +18,6 @@ class RegisterCommonValidationShould extends Specification {
 		registerCommonValidation = new RegisterCommonValidation(userDao)
 	}
 
-	def 'null command'() {
-		when:
-		registerCommonValidation.validate(null)
-
-		then:
-		def ex = thrown(ValidationFailed)
-		ex.message == 'Command can not be null'
-	}
-
 	def 'null email'() {
 		when:
 		registerCommonValidation.validate(new RegisterUser(null, 'secret', 'batman'))

@@ -1,6 +1,7 @@
 package linky.controller;
 
 import linky.command.link.CreateLink;
+import linky.command.link.DeleteLink;
 import linky.command.link.FindLink;
 import linky.dto.CreateLinkBean;
 import linky.dto.LinkBean;
@@ -16,7 +17,7 @@ public class LinkController {
 	private PipedNow pipedNow;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{id:.*}")
-	public LinkBean link(@PathVariable(value = "id") String id) {
+	public LinkBean find(@PathVariable(value = "id") String id) {
 		return new FindLink(id).execute(pipedNow);
 	}
 
@@ -31,4 +32,9 @@ public class LinkController {
 	//update my link
 	
 	//delete my link
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id:.*}")
+	public String delete(@PathVariable(value = "id") String id) {
+		new DeleteLink(id).execute(pipedNow);
+		return "ok";
+	}
 }

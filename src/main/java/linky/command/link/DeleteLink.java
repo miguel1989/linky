@@ -1,9 +1,8 @@
 package linky.command.link;
 
-import linky.dto.LinkBean;
 import linky.infra.Command;
 
-public class DeleteLink implements Command<LinkBean> {
+public class DeleteLink implements Command<Command.R.Void> {
 	private String id;
 
 	public DeleteLink(String id) {

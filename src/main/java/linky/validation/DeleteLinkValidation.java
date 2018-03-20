@@ -23,10 +23,6 @@ public class DeleteLinkValidation implements Validation<DeleteLink> {
 
 	@Override
 	public void validate(DeleteLink command) {
-		if (command == null) {
-			throw new ValidationFailed("Command can not be null");
-		}
-
 		if (Strings.isNullOrEmpty(command.id())) {
 			throw new ValidationFailed("Link id is empty");
 		}
