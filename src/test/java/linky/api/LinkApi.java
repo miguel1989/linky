@@ -8,43 +8,43 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import static linky.BasicIntegrationTest.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Component
-public class LinkApi extends BaseApi{
+public class LinkApi extends BaseApi {
 
-	@Autowired
-	public LinkApi(RestTemplate restTemplate) {
-		super(restTemplate);
-	}
+    @Autowired
+    public LinkApi(RestTemplate restTemplate) {
+        super(restTemplate);
+    }
 
-	public LinkBean createLinkAndAssert(String name, String url) {
-		ResponseEntity<LinkBean> response = createLink(name, url);
+    public LinkBean createLinkAndAssert(String name, String url) {
+        ResponseEntity<LinkBean> response = createLink(name, url);
 
-		assertThat(response.getStatusCode(), is(HttpStatus.OK));
-		LinkBean linkBean = response.getBody();
-		assertThat(linkBean, is(notNullValue()));
-		assertThat(linkBean.id, is(notNullValue()));
-		assertThat(linkBean.url, is(url));
-		assertThat(linkBean.name, is(name));
-		assertThat(linkBean.visits, is(empty()));
-		//todo think about the visits
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        LinkBean linkBean = response.getBody();
+        assertNotNull(linkBean);
+        assertNotNull(linkBean.id);
+        assertEquals(url, linkBean.url);
+        assertEquals(name, linkBean.name);
+        assertEquals(0, linkBean.visits.size());
+        //todo think about the visits
 
-		return linkBean;
-	}
+        return linkBean;
+    }
 
-	public ResponseEntity<LinkBean> createLink(String name, String url) {
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set(HttpHeaders.AUTHORIZATION,
-				buildBasicAuth(TEST_USER_EMAIL, TEST_PASSWORD));
+    public ResponseEntity<LinkBean> createLink(String name, String url) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set(HttpHeaders.AUTHORIZATION,
+                buildBasicAuth(TEST_USER_EMAIL, TEST_PASSWORD));
 
-		HttpEntity<CreateLinkBean> request = new HttpEntity<>(new CreateLinkBean(name, url), httpHeaders);
+        HttpEntity<CreateLinkBean> request = new HttpEntity<>(new CreateLinkBean(name, url), httpHeaders);
 
-		return restTemplate.exchange(
-				localUrl + "/api/link/create",
-				HttpMethod.POST,
-				request,
-				LinkBean.class);
-	}
+        return restTemplate.exchange(
+                localUrl + "/api/link/create",
+                HttpMethod.POST,
+                request,
+                LinkBean.class);
+    }
 }

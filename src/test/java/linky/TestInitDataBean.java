@@ -18,7 +18,7 @@ public class TestInitDataBean implements InitializingBean {
 	private PipedNow pipedNow;
 
 	@Override
-	public void afterPropertiesSet() throws Exception {
+	public void afterPropertiesSet() {
 		new RegisterAdmin(
 				TEST_ADMIN_EMAIL,
 				TEST_PASSWORD,

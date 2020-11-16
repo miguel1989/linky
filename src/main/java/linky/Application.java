@@ -3,6 +3,7 @@ package linky;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
@@ -13,6 +14,7 @@ public class Application {
     }
 
     @Bean
+    @Profile(Profiles.DEV)
     public RestTemplate restTemplate() {
         //RestTemplateBuilder builder
         return new RestTemplate();

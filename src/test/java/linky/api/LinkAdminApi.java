@@ -14,62 +14,61 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static linky.BasicIntegrationTest.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Component
 public class LinkAdminApi extends BaseApi {
 
-	@Autowired
-	public LinkAdminApi(RestTemplate restTemplate) {
-		super(restTemplate);
-	}
+    @Autowired
+    public LinkAdminApi(RestTemplate restTemplate) {
+        super(restTemplate);
+    }
 
-	public LinkBean findLinkSuccessAndAssert(String id) {
-		ResponseEntity<LinkBean> response = findLink(id);
-		assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    public LinkBean findLinkSuccessAndAssert(String id) {
+        ResponseEntity<LinkBean> response = findLink(id);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
-		LinkBean linkBean = response.getBody();
-		assertThat(linkBean, is(notNullValue()));
-		assertThat(linkBean.id, is(id));
-		return linkBean;
-	}
+        LinkBean linkBean = response.getBody();
+        assertNotNull(linkBean);
+        assertNotNull(linkBean.id);
+        return linkBean;
+    }
 
-	public ResponseEntity<LinkBean> findLink(String id) {
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set(HttpHeaders.AUTHORIZATION,
-				buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
+    public ResponseEntity<LinkBean> findLink(String id) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set(HttpHeaders.AUTHORIZATION,
+                buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
 
-		HttpEntity<String> request = new HttpEntity<>(httpHeaders);
+        HttpEntity<String> request = new HttpEntity<>(httpHeaders);
 
-		return restTemplate.exchange(
-				localUrl + "/admin/link/" + id,
-				HttpMethod.GET,
-				request,
-				LinkBean.class);
-	}
+        return restTemplate.exchange(
+                localUrl + "/admin/link/" + id,
+                HttpMethod.GET,
+                request,
+                LinkBean.class);
+    }
 
-	public ResponseEntity<RestResponsePage<LinkBeanSimple>> findLinks(String name, String url) { //Page<LinkBeanSimple>
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set(HttpHeaders.AUTHORIZATION,
-				buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
+    public ResponseEntity<RestResponsePage<LinkBeanSimple>> findLinks(String name, String url) { //Page<LinkBeanSimple>
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set(HttpHeaders.AUTHORIZATION,
+                buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
 
-		HttpEntity<CreateLinkBean> request = new HttpEntity<>(httpHeaders);
+        HttpEntity<CreateLinkBean> request = new HttpEntity<>(httpHeaders);
 
-		//there are also page & size params
-		Map<String, String> params = new HashMap<>();
-		params.put("name", name);
-		params.put("url", url);
+        //there are also page & size params
+        Map<String, String> params = new HashMap<>();
+        params.put("name", name);
+        params.put("url", url);
 
-		//	new TypeReference<PageImpl<LinkBeanSimple>>(){}
-		return restTemplate.exchange(
-				localUrl + "/admin/links?name={name}&url={url}",
-				HttpMethod.GET,
-				request,
-				new ParameterizedTypeReference<RestResponsePage<LinkBeanSimple>>() {
-				},
-				params
-		);
-	}
+        //	new TypeReference<PageImpl<LinkBeanSimple>>(){}
+        return restTemplate.exchange(
+                localUrl + "/admin/links?name={name}&url={url}",
+                HttpMethod.GET,
+                request,
+                new ParameterizedTypeReference<RestResponsePage<LinkBeanSimple>>() {
+                },
+                params
+        );
+    }
 }
