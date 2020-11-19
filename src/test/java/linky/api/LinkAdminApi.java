@@ -71,4 +71,20 @@ public class LinkAdminApi extends BaseApi {
                 params
         );
     }
+
+    public void deleteAnyLinkAndAssert(String id) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set(HttpHeaders.AUTHORIZATION,
+                buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
+
+        HttpEntity<String> request = new HttpEntity<>(httpHeaders);
+
+        ResponseEntity<String> responseEntity = restTemplate.exchange(
+                localUrl + "/admin/link/" + id,
+                HttpMethod.DELETE,
+                request,
+                String.class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
 }

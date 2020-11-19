@@ -1,5 +1,6 @@
 package linky.controller.admin;
 
+import linky.command.link.admin.DeleteAnyLink;
 import linky.command.link.admin.FindAnyLink;
 import linky.dto.LinkBean;
 import linky.infra.PipedNow;
@@ -23,7 +24,11 @@ public class LinkAdminController {
 
     //todo admin update link
 
-    //todo admin delete link
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{id:.*}")
+    public String delete(@PathVariable(value = "id") String id) {
+        new DeleteAnyLink(id).execute(pipedNow);
+        return "ok";
+    }
 
 //	@RequestMapping(method = RequestMethod.GET, value = "/{id:.*}/visits")
 //	public Collection<VisitBean> visits(@PathVariable(value = "id") String id) {

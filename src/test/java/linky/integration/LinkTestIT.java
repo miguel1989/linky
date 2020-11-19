@@ -2,8 +2,6 @@ package linky.integration;
 
 import linky.BasicIntegrationTest;
 import linky.dto.LinkBean;
-import linky.dto.LinkBeanSimple;
-import linky.dto.RestResponsePage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,20 +42,4 @@ public class LinkTestIT extends BasicIntegrationTest {
         assertEquals(1, linkBean.visits.size());
     }
 
-    @Test
-    public void adminFindLinks() {
-        linkApi.createLinkAndAssert("1gogle1", "www.google.lv");
-        linkApi.createLinkAndAssert("2gogle2", "www.google2.lv");
-        linkApi.createLinkAndAssert("yaho", "www.yahoo.lv");
-        linkApi.createLinkAndAssert("yaho5", "www.yahoo.lv");
-
-        RestResponsePage<LinkBeanSimple> result = linkAdminApi.findLinks("gogle", null).getBody();
-        assertEquals(2, result.getContent().size());
-
-        result = linkAdminApi.findLinks("aho5", null).getBody();
-        assertEquals(1, result.getContent().size());
-
-        result = linkAdminApi.findLinks(null, "www.yahoo.lv").getBody();
-        assertEquals(2, result.getContent().size());
-    }
 }

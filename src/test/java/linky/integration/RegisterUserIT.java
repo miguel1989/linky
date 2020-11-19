@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.HttpClientErrorException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class RegisterUserIT extends BasicIntegrationTest {
 
     @Test
@@ -19,11 +21,7 @@ public class RegisterUserIT extends BasicIntegrationTest {
         Throwable exceptionThatWasThrown = Assertions.assertThrows(HttpClientErrorException.class, () -> {
             userApi.registerUser(TEST_USER_EMAIL);
         });
-        int a = 0;
-        //todo investigate how to check the message...
-//		thrown.expect(HttpClientErrorException.class);
-//		thrown.expectMessage(""); HttpClientErrorException return message as "400 null"
-
+        assertEquals("400 : [E-mail already exists]", exceptionThatWasThrown.getMessage());
     }
 
     @Test
@@ -31,6 +29,6 @@ public class RegisterUserIT extends BasicIntegrationTest {
         Throwable exceptionThatWasThrown = Assertions.assertThrows(HttpClientErrorException.class, () -> {
             userApi.registerUser("something");
         });
-        int a = 0;
+        assertEquals("400 : [Not a valid e-mail]", exceptionThatWasThrown.getMessage());
     }
 }
