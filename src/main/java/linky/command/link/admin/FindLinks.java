@@ -1,4 +1,4 @@
-package linky.command.link;
+package linky.command.link.admin;
 
 import com.google.common.collect.ImmutableList;
 import linky.dto.PageLinksBeanSimple;

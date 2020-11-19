@@ -1,10 +1,9 @@
 package linky.reaction.link.admin
 
-import linky.command.link.FindLinks
+import linky.command.link.admin.FindLinks
 import linky.dao.LinkDao
 import linky.domain.Link
 import linky.dto.PageLinksBeanSimple
-import linky.reaction.link.admin.FindLinksReaction
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable

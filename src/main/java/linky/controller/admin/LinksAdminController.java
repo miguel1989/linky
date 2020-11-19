@@ -1,6 +1,6 @@
 package linky.controller.admin;
 
-import linky.command.link.FindLinks;
+import linky.command.link.admin.FindLinks;
 import linky.dto.LinkBeanSimple;
 import linky.infra.PipedNow;
 import org.springframework.beans.factory.annotation.Autowired;

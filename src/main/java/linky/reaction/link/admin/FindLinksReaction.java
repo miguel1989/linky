@@ -1,7 +1,7 @@
 package linky.reaction.link.admin;
 
 import com.google.common.base.Strings;
-import linky.command.link.FindLinks;
+import linky.command.link.admin.FindLinks;
 import linky.dao.LinkDao;
 import linky.dao.specification.LinkSpecification;
 import linky.domain.Link;
