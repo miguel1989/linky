@@ -1,6 +1,6 @@
 package linky.controller.admin;
 
-import linky.command.link.FindLink;
+import linky.command.link.FindMyLink;
 import linky.dto.LinkBean;
 import linky.infra.PipedNow;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class LinkAdminController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{id:.*}")
 	public LinkBean link(@PathVariable(value = "id") String id) {
-		return new FindLink(id).execute(pipedNow);
+		return new FindMyLink(id, "").execute(pipedNow);
 	}
 
 	//todo admin update link

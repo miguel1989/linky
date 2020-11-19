@@ -6,13 +6,15 @@ import linky.infra.Command;
 
 import java.util.Collection;
 
-public class FindLink implements Command<LinkBean> {
+public class FindMyLink implements Command<LinkBean> {
 
 	//todo maybe allow also to find link by name
 	private final String id;
+	private final String userId;
 
-	public FindLink(String id) {
+	public FindMyLink(String id, String userId) {
 		this.id = id;
+		this.userId = userId;
 	}
 
 	public Collection<TxFlag> txFlags() {
@@ -21,6 +23,10 @@ public class FindLink implements Command<LinkBean> {
 
 	public String id() {
 		return this.id;
+	}
+
+	public String requestUserId() {
+		return this.userId;
 	}
 
 	@Override

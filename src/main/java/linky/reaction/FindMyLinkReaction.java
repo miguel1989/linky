@@ -1,6 +1,6 @@
 package linky.reaction;
 
-import linky.command.link.FindLink;
+import linky.command.link.FindMyLink;
 import linky.dao.LinkDao;
 import linky.domain.Link;
 import linky.dto.LinkBean;
@@ -12,17 +12,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
-public class FindLinkReaction implements Reaction<FindLink, LinkBean> {
+public class FindMyLinkReaction implements Reaction<FindMyLink, LinkBean> {
 
 	private final LinkDao linkDao;
 
 	@Autowired
-	public FindLinkReaction(LinkDao linkDao) {
+	public FindMyLinkReaction(LinkDao linkDao) {
 		this.linkDao = linkDao;
 	}
 
 	@Override
-	public LinkBean react(FindLink command) {
+	public LinkBean react(FindMyLink command) {
 		Optional<Link> optLink = linkDao.findById(UUID.fromString(command.id()));
 		return optLink.map(LinkBean::new).orElseGet(LinkBean::new);
 	}

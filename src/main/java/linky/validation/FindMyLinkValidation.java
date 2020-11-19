@@ -1,7 +1,7 @@
 package linky.validation;
 
 import com.google.common.base.Strings;
-import linky.command.link.FindLink;
+import linky.command.link.FindMyLink;
 import linky.dao.LinkDao;
 import linky.domain.Link;
 import linky.exception.ValidationFailed;
@@ -13,17 +13,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
-public class FindLinkValidation implements Validation<FindLink> {
+public class FindMyLinkValidation implements Validation<FindMyLink> {
 
 	private final LinkDao linkDao;
 
 	@Autowired
-	public FindLinkValidation(LinkDao linkDao) {
+	public FindMyLinkValidation(LinkDao linkDao) {
 		this.linkDao = linkDao;
 	}
 
 	@Override
-	public void validate(FindLink command) {
+	public void validate(FindMyLink command) {
 		if (Strings.isNullOrEmpty(command.id())) {
 			throw new ValidationFailed("Link id is empty");
 		}
@@ -31,6 +31,10 @@ public class FindLinkValidation implements Validation<FindLink> {
 		Optional<Link> optLink = linkDao.findById(UUID.fromString(command.id()));
 		if (!optLink.isPresent()) {
 			throw new ValidationFailed("Link not found");
+		}
+
+		if (!optLink.get().createdBy().equals(command.requestUserId())) {
+			throw new ValidationFailed("You are not allowed to read this link");
 		}
 	}
 }
