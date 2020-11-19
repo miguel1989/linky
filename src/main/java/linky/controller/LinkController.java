@@ -1,7 +1,7 @@
 package linky.controller;
 
 import linky.command.link.CreateLink;
-import linky.command.link.DeleteLink;
+import linky.command.link.DeleteMyLink;
 import linky.command.link.FindMyLink;
 import linky.dto.CreateLinkBean;
 import linky.dto.LinkBean;
@@ -34,7 +34,7 @@ public class LinkController {
 	//delete my link
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id:.*}")
 	public String delete(@PathVariable(value = "id") String id) {
-		new DeleteLink(id).execute(pipedNow);
+		new DeleteMyLink(id, AuthUser.id()).execute(pipedNow);
 		return "ok";
 	}
 }

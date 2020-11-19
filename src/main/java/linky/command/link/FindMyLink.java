@@ -31,6 +31,6 @@ public class FindMyLink implements Command<LinkBean> {
 
 	@Override
 	public String toLogString() {
-		return "FindLink(id = " + id + " )";
+		return "FindMyLink(id = " + id + " )";
 	}
 }
