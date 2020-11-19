@@ -9,7 +9,7 @@ import java.util.Collection;
 public class FindLink implements Command<LinkBean> {
 
 	//todo maybe allow also to find link by name
-	private String id;
+	private final String id;
 
 	public FindLink(String id) {
 		this.id = id;

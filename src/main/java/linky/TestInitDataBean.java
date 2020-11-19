@@ -12,19 +12,19 @@ import org.springframework.stereotype.Component;
 @Profile(Profiles.DEV)
 public class TestInitDataBean implements InitializingBean {
 
-	@Autowired
-	private PipedNow pipedNow;
+    @Autowired
+    private PipedNow pipedNow;
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		new RegisterUser(
-				"user@linky.lv",
-				"secret",
-				"robin").execute(pipedNow);
+    @Override
+    public void afterPropertiesSet() {
+        new RegisterUser(
+                "user@linky.lv",
+                "secret",
+                "robin").execute(pipedNow);
 
-		new RegisterAdmin(
-				"admin@linky.lv",
-				"secret",
-				"batman").execute(pipedNow);
-	}
+        new RegisterAdmin(
+                "admin@linky.lv",
+                "secret",
+                "batman").execute(pipedNow);
+    }
 }

@@ -8,12 +8,12 @@ import java.util.Collection;
 
 public class FindLinksForUser implements Command<LinksBean> {
 
-	private String userId;
+	private final String userId;
 
 	public FindLinksForUser(String userId) {
 		this.userId = userId;
 	}
-	
+
 	public String userId() {
 		return userId;
 	}

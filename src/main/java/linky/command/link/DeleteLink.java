@@ -3,7 +3,7 @@ package linky.command.link;
 import linky.infra.Command;
 
 public class DeleteLink implements Command<Command.R.Void> {
-	private String id;
+	private final String id;
 
 	public DeleteLink(String id) {
 		this.id = id;

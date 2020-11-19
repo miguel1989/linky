@@ -5,16 +5,16 @@ import linky.infra.Command;
 
 public class CreateLink implements Command<LinkBean> {
 
-	private String userId;
-	private String name;
-	private String url;
+	private final String userId;
+	private final String name;
+	private final String url;
 
 	public CreateLink(String userId, String name, String url) {
 		this.userId = userId;
 		this.name = name;
 		this.url = url;
 	}
-	
+
 	public String userId() {
 		return userId;
 	}

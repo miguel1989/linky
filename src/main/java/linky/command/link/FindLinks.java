@@ -10,8 +10,8 @@ public class FindLinks implements Command<PageLinksBeanSimple> {
 
 	private int page = 0;
 	private int size = 20;
-	private String name;
-	private String url;
+	private final String name;
+	private final String url;
 
 	public FindLinks(String name, String url) {
 		this.name = name;
