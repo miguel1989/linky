@@ -13,11 +13,11 @@ class UniqueLinkNameShould extends Specification {
 		linkDao = Mock(LinkDao)
 		uniqueLinkName = new UniqueLinkName(linkDao)
 	}
-	
+
 	def 'not guaranteed'() {
 		setup:
 		linkDao.findByName('google') >> Optional.of(new Link())
-		
+
 		expect:
 		!uniqueLinkName.guaranteed('google')
 	}

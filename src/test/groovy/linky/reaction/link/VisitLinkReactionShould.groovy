@@ -20,7 +20,7 @@ class VisitLinkReactionShould extends Specification {
 		linkDao = Mock(LinkDao)
 		visitLinkReaction = new VisitLinkReaction(linkDao)
 
-		SideEffects sideEffects = new SideEffects(Mock(ListableBeanFactory){
+		SideEffects sideEffects = new SideEffects(Mock(ListableBeanFactory) {
 			getBeansOfType(_) >> [:]
 		})
 		new EphemeralDomainEvents(sideEffects, Mock(TransactionTemplate))

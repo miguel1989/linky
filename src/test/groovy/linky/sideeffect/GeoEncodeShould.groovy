@@ -13,20 +13,20 @@ class GeoEncodeShould extends Specification {
 	GeoEncode geoEncode
 	VisitDao visitDao
 	RestTemplate restTemplate
-	
+
 	void setup() {
 		visitDao = Mock(VisitDao)
 		restTemplate = Mock(RestTemplate)
 		geoEncode = new GeoEncode(visitDao, restTemplate)
 	}
-	
+
 	def 'wrong visit id'() {
 		setup:
 		visitDao.findById(_) >> Optional.empty()
-		
+
 		when:
 		geoEncode.occur(new NewVisitOccurred(UUID.randomUUID(), '127.1.1.1'))
-		
+
 		then:
 		0 * restTemplate.getForEntity(_, _)
 	}
@@ -36,10 +36,10 @@ class GeoEncodeShould extends Specification {
 		Visit visit = new Visit()
 		visitDao.findById(_) >> Optional.of(visit)
 		restTemplate.getForEntity(_, _) >> new ResponseEntity<>("{}", HttpStatus.OK)
-		
+
 		when:
 		geoEncode.occur(new NewVisitOccurred(UUID.randomUUID(), '127.1.1.1'))
-		
+
 		then:
 		visit.country() == 'No country =('
 		visit.data() == '{}'
@@ -73,6 +73,6 @@ class GeoEncodeShould extends Specification {
 		visit.country() == 'United States'
 		visit.data() == jsonResponse
 	}
-	
+
 	//todo test when HTTP STATUS is not OK
 }

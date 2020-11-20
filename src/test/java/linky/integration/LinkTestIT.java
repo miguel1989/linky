@@ -21,41 +21,41 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class LinkTestIT extends BasicIntegrationTest {
 
-    @Autowired
-    private WebApplicationContext wac;
-    private MockMvc mockMvc;
+	@Autowired
+	private WebApplicationContext wac;
+	private MockMvc mockMvc;
 
-    @BeforeEach
-    public void setup() {
-        super.setup();
-        //setup the mock to use the web context
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-    }
+	@BeforeEach
+	public void setup() {
+		super.setup();
+		//setup the mock to use the web context
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+	}
 
-    @Test
-    public void visitLink() throws Exception {
-        LinkBean linkBean = linkApi.createLinkAndAssert("gogle", "www.google.lv");
+	@Test
+	public void visitLink() throws Exception {
+		LinkBean linkBean = linkApi.createLinkAndAssert("gogle", "www.google.lv");
 
-        mockMvc.perform(get(new URI(localUrl() + "/gogle")))
+		mockMvc.perform(get(new URI(localUrl() + "/gogle")))
 //				.andExpect(status().isOk())
-                .andExpect(redirectedUrl("www.google.lv"));
+				.andExpect(redirectedUrl("www.google.lv"));
 
-        linkBean = linkAdminApi.findLinkSuccessAndAssert(linkBean.id);
-        assertEquals("gogle", linkBean.name);
-        assertEquals("www.google.lv", linkBean.url);
-        assertEquals(1, linkBean.visits.size());
-    }
+		linkBean = linkAdminApi.findLinkSuccessAndAssert(linkBean.id);
+		assertEquals("gogle", linkBean.name);
+		assertEquals("www.google.lv", linkBean.url);
+		assertEquals(1, linkBean.visits.size());
+	}
 
-    @Test
-    public void myLinks() {
-        linkApi.createLinkAndAssert("1gogle1", "www.google.lv");
-        linkApi.createLinkAndAssert("2gogle2", "www.google2.lv");
+	@Test
+	public void myLinks() {
+		linkApi.createLinkAndAssert("1gogle1", "www.google.lv");
+		linkApi.createLinkAndAssert("2gogle2", "www.google2.lv");
 
-        ResponseEntity<RestResponsePage<LinkBeanSimple>> responseEntity = linkApi.findMyLinks();
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		ResponseEntity<RestResponsePage<LinkBeanSimple>> responseEntity = linkApi.findMyLinks();
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-        RestResponsePage<LinkBeanSimple> result = responseEntity.getBody();
-        assertEquals(2, result.getContent().size());
-    }
+		RestResponsePage<LinkBeanSimple> result = responseEntity.getBody();
+		assertEquals(2, result.getContent().size());
+	}
 
 }

@@ -44,7 +44,7 @@ class RegisterAdminReactionShould extends Specification {
 			assert user.password() != 'secret'
 			assert user.roles.size() == 2
 			Collection<String> expectedRoles = Lists.newArrayList('ROLE_USER', 'ROLE_ADMIN')
-			user.roles.each{
+			user.roles.each {
 				assert expectedRoles.contains(it.role)
 			}
 		}

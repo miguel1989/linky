@@ -20,71 +20,71 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Component
 public class LinkAdminApi extends BaseApi {
 
-    @Autowired
-    public LinkAdminApi(RestTemplate restTemplate) {
-        super(restTemplate);
-    }
+	@Autowired
+	public LinkAdminApi(RestTemplate restTemplate) {
+		super(restTemplate);
+	}
 
-    public LinkBean findLinkSuccessAndAssert(String id) {
-        ResponseEntity<LinkBean> response = findLink(id);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+	public LinkBean findLinkSuccessAndAssert(String id) {
+		ResponseEntity<LinkBean> response = findLink(id);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        LinkBean linkBean = response.getBody();
-        assertNotNull(linkBean);
-        assertNotNull(linkBean.id);
-        return linkBean;
-    }
+		LinkBean linkBean = response.getBody();
+		assertNotNull(linkBean);
+		assertNotNull(linkBean.id);
+		return linkBean;
+	}
 
-    public ResponseEntity<LinkBean> findLink(String id) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(HttpHeaders.AUTHORIZATION,
-                buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
+	public ResponseEntity<LinkBean> findLink(String id) {
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set(HttpHeaders.AUTHORIZATION,
+				buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
 
-        HttpEntity<String> request = new HttpEntity<>(httpHeaders);
+		HttpEntity<String> request = new HttpEntity<>(httpHeaders);
 
-        return restTemplate.exchange(
-                localUrl + "/admin/link/" + id,
-                HttpMethod.GET,
-                request,
-                LinkBean.class);
-    }
+		return restTemplate.exchange(
+				localUrl + "/admin/link/" + id,
+				HttpMethod.GET,
+				request,
+				LinkBean.class);
+	}
 
-    public ResponseEntity<RestResponsePage<LinkBeanSimple>> findLinks(String name, String url) { //Page<LinkBeanSimple>
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(HttpHeaders.AUTHORIZATION,
-                buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
+	public ResponseEntity<RestResponsePage<LinkBeanSimple>> findLinks(String name, String url) { //Page<LinkBeanSimple>
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set(HttpHeaders.AUTHORIZATION,
+				buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
 
-        HttpEntity<CreateLinkBean> request = new HttpEntity<>(httpHeaders);
+		HttpEntity<CreateLinkBean> request = new HttpEntity<>(httpHeaders);
 
-        //there are also page & size params
-        Map<String, String> params = new HashMap<>();
-        params.put("name", name);
-        params.put("url", url);
+		//there are also page & size params
+		Map<String, String> params = new HashMap<>();
+		params.put("name", name);
+		params.put("url", url);
 
-        //	new TypeReference<PageImpl<LinkBeanSimple>>(){}
-        return restTemplate.exchange(
-                localUrl + "/admin/links?name={name}&url={url}",
-                HttpMethod.GET,
-                request,
-                new ParameterizedTypeReference<RestResponsePage<LinkBeanSimple>>() {
-                },
-                params
-        );
-    }
+		//	new TypeReference<PageImpl<LinkBeanSimple>>(){}
+		return restTemplate.exchange(
+				localUrl + "/admin/links?name={name}&url={url}",
+				HttpMethod.GET,
+				request,
+				new ParameterizedTypeReference<RestResponsePage<LinkBeanSimple>>() {
+				},
+				params
+		);
+	}
 
-    public void deleteAnyLinkAndAssert(String id) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(HttpHeaders.AUTHORIZATION,
-                buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
+	public void deleteAnyLinkAndAssert(String id) {
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set(HttpHeaders.AUTHORIZATION,
+				buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
 
-        HttpEntity<String> request = new HttpEntity<>(httpHeaders);
+		HttpEntity<String> request = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<String> responseEntity = restTemplate.exchange(
-                localUrl + "/admin/link/" + id,
-                HttpMethod.DELETE,
-                request,
-                String.class);
+		ResponseEntity<String> responseEntity = restTemplate.exchange(
+				localUrl + "/admin/link/" + id,
+				HttpMethod.DELETE,
+				request,
+				String.class);
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    }
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	}
 }

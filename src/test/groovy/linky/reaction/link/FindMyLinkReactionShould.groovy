@@ -4,7 +4,6 @@ import linky.command.link.FindMyLink
 import linky.dao.LinkDao
 import linky.domain.Link
 import linky.dto.LinkBean
-import linky.reaction.link.FindMyLinkReaction
 import spock.lang.Specification
 
 class FindMyLinkReactionShould extends Specification {
@@ -20,7 +19,7 @@ class FindMyLinkReactionShould extends Specification {
 	def "correct react"() {
 		setup:
 		UUID uuid = UUID.randomUUID()
-		linkDao.findById(uuid) >> Optional.of(new Link('myLink','www.batman.com', 'batman'))
+		linkDao.findById(uuid) >> Optional.of(new Link('myLink', 'www.batman.com', 'batman'))
 
 		when:
 		LinkBean linkBean = findLinkReaction.react(new FindMyLink(uuid.toString(), 'batman'))

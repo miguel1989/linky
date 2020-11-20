@@ -9,7 +9,7 @@ import spock.lang.Specification
 class RegisterAdminValidationShould extends Specification {
 
 	RegisterAdminValidation registerAdminValidation
-    RegisterCommonValidation registerCommonValidation
+	RegisterCommonValidation registerCommonValidation
 
 	void setup() {
 		registerCommonValidation = Mock(RegisterCommonValidation)

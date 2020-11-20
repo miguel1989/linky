@@ -20,57 +20,57 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Component
 public class LinkApi extends BaseApi {
 
-    @Autowired
-    public LinkApi(RestTemplate restTemplate) {
-        super(restTemplate);
-    }
+	@Autowired
+	public LinkApi(RestTemplate restTemplate) {
+		super(restTemplate);
+	}
 
-    public ResponseEntity<RestResponsePage<LinkBeanSimple>> findMyLinks() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(HttpHeaders.AUTHORIZATION,
-                buildBasicAuth(TEST_USER_EMAIL, TEST_PASSWORD));
+	public ResponseEntity<RestResponsePage<LinkBeanSimple>> findMyLinks() {
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set(HttpHeaders.AUTHORIZATION,
+				buildBasicAuth(TEST_USER_EMAIL, TEST_PASSWORD));
 
-        HttpEntity<CreateLinkBean> request = new HttpEntity<>(httpHeaders);
+		HttpEntity<CreateLinkBean> request = new HttpEntity<>(httpHeaders);
 
-        //there are also page & size params
-        Map<String, String> params = new HashMap<>();
+		//there are also page & size params
+		Map<String, String> params = new HashMap<>();
 
-        return restTemplate.exchange(
-                localUrl + "/api/links",
-                HttpMethod.GET,
-                request,
-                new ParameterizedTypeReference<RestResponsePage<LinkBeanSimple>>() {
-                },
-                params
-        );
-    }
+		return restTemplate.exchange(
+				localUrl + "/api/links",
+				HttpMethod.GET,
+				request,
+				new ParameterizedTypeReference<RestResponsePage<LinkBeanSimple>>() {
+				},
+				params
+		);
+	}
 
-    public LinkBean createLinkAndAssert(String name, String url) {
-        ResponseEntity<LinkBean> response = createLink(name, url);
+	public LinkBean createLinkAndAssert(String name, String url) {
+		ResponseEntity<LinkBean> response = createLink(name, url);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        LinkBean linkBean = response.getBody();
-        assertNotNull(linkBean);
-        assertNotNull(linkBean.id);
-        assertEquals(url, linkBean.url);
-        assertEquals(name, linkBean.name);
-        assertEquals(0, linkBean.visits.size());
-        //todo think about the visits
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		LinkBean linkBean = response.getBody();
+		assertNotNull(linkBean);
+		assertNotNull(linkBean.id);
+		assertEquals(url, linkBean.url);
+		assertEquals(name, linkBean.name);
+		assertEquals(0, linkBean.visits.size());
+		//todo think about the visits
 
-        return linkBean;
-    }
+		return linkBean;
+	}
 
-    public ResponseEntity<LinkBean> createLink(String name, String url) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(HttpHeaders.AUTHORIZATION,
-                buildBasicAuth(TEST_USER_EMAIL, TEST_PASSWORD));
+	public ResponseEntity<LinkBean> createLink(String name, String url) {
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set(HttpHeaders.AUTHORIZATION,
+				buildBasicAuth(TEST_USER_EMAIL, TEST_PASSWORD));
 
-        HttpEntity<CreateLinkBean> request = new HttpEntity<>(new CreateLinkBean(name, url), httpHeaders);
+		HttpEntity<CreateLinkBean> request = new HttpEntity<>(new CreateLinkBean(name, url), httpHeaders);
 
-        return restTemplate.exchange(
-                localUrl + "/api/link/create",
-                HttpMethod.POST,
-                request,
-                LinkBean.class);
-    }
+		return restTemplate.exchange(
+				localUrl + "/api/link/create",
+				HttpMethod.POST,
+				request,
+				LinkBean.class);
+	}
 }
