@@ -19,21 +19,21 @@ import java.util.stream.Collectors;
 @Component
 public class FindLinksForUserReaction implements Reaction<FindLinksForUser, PageLinksBeanSimple> {
 
-    private final LinkDao linkDao;
+	private final LinkDao linkDao;
 
-    @Autowired
-    public FindLinksForUserReaction(LinkDao linkDao) {
-        this.linkDao = linkDao;
-    }
+	@Autowired
+	public FindLinksForUserReaction(LinkDao linkDao) {
+		this.linkDao = linkDao;
+	}
 
-    @Override
-    public PageLinksBeanSimple react(FindLinksForUser command) {
-        Pageable pageable = PageRequest.of(command.page(), command.size());
-        Page<Link> pageLinks = linkDao.findByCreatedBy(command.userId(), pageable);
+	@Override
+	public PageLinksBeanSimple react(FindLinksForUser command) {
+		Pageable pageable = PageRequest.of(command.page(), command.size());
+		Page<Link> pageLinks = linkDao.findByCreatedBy(command.userId(), pageable);
 
-        List<LinkBeanSimple> linkBeanSimpleList = pageLinks.getContent().stream()
-                .map(LinkBeanSimple::new).collect(Collectors.toList());
-        RestResponsePage<LinkBeanSimple> pageLinksSimple = new RestResponsePage<>(linkBeanSimpleList, pageable, pageLinks.getTotalElements());
-        return new PageLinksBeanSimple(pageLinksSimple);
-    }
+		List<LinkBeanSimple> linkBeanSimpleList = pageLinks.getContent().stream()
+				.map(LinkBeanSimple::new).collect(Collectors.toList());
+		RestResponsePage<LinkBeanSimple> pageLinksSimple = new RestResponsePage<>(linkBeanSimpleList, pageable, pageLinks.getTotalElements());
+		return new PageLinksBeanSimple(pageLinksSimple);
+	}
 }

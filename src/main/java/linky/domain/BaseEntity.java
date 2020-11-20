@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @MappedSuperclass
 public abstract class BaseEntity {
-	
+
 	@Id
 	@Column(name = "id")
 	protected UUID id = UUIDs.timeBased();
@@ -21,7 +21,7 @@ public abstract class BaseEntity {
 	public UUID id() {
 		return id;
 	}
-	
+
 	public LocalTime createdAt() {
 		return createdAt;
 	}

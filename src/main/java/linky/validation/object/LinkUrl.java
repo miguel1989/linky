@@ -10,7 +10,7 @@ public class LinkUrl {
 	public LinkUrl(String url) {
 		this.urlStr = url;
 	}
-	
+
 	public boolean isValid() {
 		if (!this.urlStr.startsWith("http") || !this.urlStr.startsWith("ftp")) {
 			this.urlStr = "http://" + this.urlStr;

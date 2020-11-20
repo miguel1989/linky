@@ -14,18 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/links")
 public class LinksController {
 
-    @Autowired
-    private PipedNow pipedNow;
+	@Autowired
+	private PipedNow pipedNow;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public Page<LinkBeanSimple> myLinks(@RequestParam(required = false, value = "page") Integer page,
-                                        @RequestParam(required = false, value = "size") Integer pageSize) {
-        if (page == null) {
-            page = 0;
-        }
-        if (pageSize == null) {
-            pageSize = 20;
-        }
-        return new FindLinksForUser(AuthUser.id(), page, pageSize).execute(pipedNow).pageLinks;
-    }
+	@RequestMapping(method = RequestMethod.GET)
+	public Page<LinkBeanSimple> myLinks(@RequestParam(required = false, value = "page") Integer page,
+										@RequestParam(required = false, value = "size") Integer pageSize) {
+		if (page == null) {
+			page = 0;
+		}
+		if (pageSize == null) {
+			pageSize = 20;
+		}
+		return new FindLinksForUser(AuthUser.id(), page, pageSize).execute(pipedNow).pageLinks;
+	}
 }

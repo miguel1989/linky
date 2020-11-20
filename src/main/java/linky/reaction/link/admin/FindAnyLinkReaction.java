@@ -14,16 +14,16 @@ import java.util.UUID;
 @Component
 public class FindAnyLinkReaction implements Reaction<FindAnyLink, LinkBean> {
 
-    private final LinkDao linkDao;
+	private final LinkDao linkDao;
 
-    @Autowired
-    public FindAnyLinkReaction(LinkDao linkDao) {
-        this.linkDao = linkDao;
-    }
+	@Autowired
+	public FindAnyLinkReaction(LinkDao linkDao) {
+		this.linkDao = linkDao;
+	}
 
-    @Override
-    public LinkBean react(FindAnyLink command) {
-        Optional<Link> optLink = linkDao.findById(UUID.fromString(command.id()));
-        return optLink.map(LinkBean::new).orElseGet(LinkBean::new);
-    }
+	@Override
+	public LinkBean react(FindAnyLink command) {
+		Optional<Link> optLink = linkDao.findById(UUID.fromString(command.id()));
+		return optLink.map(LinkBean::new).orElseGet(LinkBean::new);
+	}
 }

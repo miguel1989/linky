@@ -1,7 +1,6 @@
 package linky.command.link;
 
 import com.google.common.collect.ImmutableList;
-import linky.dto.LinksBean;
 import linky.dto.PageLinksBeanSimple;
 import linky.infra.Command;
 

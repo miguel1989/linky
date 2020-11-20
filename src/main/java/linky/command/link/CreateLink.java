@@ -18,9 +18,11 @@ public class CreateLink implements Command<LinkBean> {
 	public String userId() {
 		return userId;
 	}
+
 	public String name() {
 		return name;
 	}
+
 	public String url() {
 		return url;
 	}

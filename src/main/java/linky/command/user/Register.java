@@ -15,9 +15,11 @@ public abstract class Register {
 	public String email() {
 		return email;
 	}
+
 	public String password() {
 		return password;
 	}
+
 	public String name() {
 		return name;
 	}

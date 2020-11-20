@@ -13,7 +13,7 @@ class AuthUser {
 				&& auth.getPrincipal() != null) {
 			//from 'login' spring sets User
 			if (auth.getPrincipal() instanceof User) {
-				return ((User)auth.getPrincipal()).id().toString();
+				return ((User) auth.getPrincipal()).id().toString();
 			}
 			//from 'register' i set the ID it self already
 			return auth.getPrincipal().toString();

@@ -15,22 +15,22 @@ import java.util.UUID;
 @Component
 public class FindAnyLinkValidation implements Validation<FindAnyLink> {
 
-    private final LinkDao linkDao;
+	private final LinkDao linkDao;
 
-    @Autowired
-    public FindAnyLinkValidation(LinkDao linkDao) {
-        this.linkDao = linkDao;
-    }
+	@Autowired
+	public FindAnyLinkValidation(LinkDao linkDao) {
+		this.linkDao = linkDao;
+	}
 
-    @Override
-    public void validate(FindAnyLink command) {
-        if (Strings.isNullOrEmpty(command.id())) {
-            throw new ValidationFailed("Link id is empty");
-        }
+	@Override
+	public void validate(FindAnyLink command) {
+		if (Strings.isNullOrEmpty(command.id())) {
+			throw new ValidationFailed("Link id is empty");
+		}
 
-        Optional<Link> optLink = linkDao.findById(UUID.fromString(command.id()));
-        if (!optLink.isPresent()) {
-            throw new ValidationFailed("Link not found");
-        }
-    }
+		Optional<Link> optLink = linkDao.findById(UUID.fromString(command.id()));
+		if (!optLink.isPresent()) {
+			throw new ValidationFailed("Link not found");
+		}
+	}
 }

@@ -34,6 +34,7 @@ public class User extends BaseEntity implements UserDetails {
 		this.name = name;
 		grantUser();
 	}
+
 	public String email() {
 		return email;
 	}
@@ -45,10 +46,11 @@ public class User extends BaseEntity implements UserDetails {
 	public String name() {
 		return name;
 	}
-	
+
 	public void grantUser() {
 		this.roles.add(new Role(this, Role.ROLE_USER));
 	}
+
 	public void grantAdmin() {
 		this.roles.add(new Role(this, Role.ROLE_ADMIN));
 	}

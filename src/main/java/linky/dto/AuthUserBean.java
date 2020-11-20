@@ -11,12 +11,12 @@ public class AuthUserBean implements Command.R {
 	public String email;
 	public String name;
 	public Collection<RoleBean> roles;
-	
+
 	public AuthUserBean() {
-		
+
 	}
 
-	public AuthUserBean (User user) {
+	public AuthUserBean(User user) {
 		id = user.id().toString();
 		email = user.email();
 		name = user.name();

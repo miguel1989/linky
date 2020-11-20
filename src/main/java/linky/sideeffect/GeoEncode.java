@@ -33,7 +33,7 @@ public class GeoEncode implements SideEffect<NewVisitOccurred> {
 	@Autowired
 	public GeoEncode(VisitDao visitDao, RestTemplate restTemplate) {
 		this.visitDao = visitDao;
-		this.restTemplate = restTemplate; 
+		this.restTemplate = restTemplate;
 	}
 
 	@Override

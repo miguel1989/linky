@@ -1,7 +1,6 @@
 package linky.validation.link.admin;
 
 import com.google.common.base.Strings;
-import linky.command.link.DeleteMyLink;
 import linky.command.link.admin.DeleteAnyLink;
 import linky.dao.LinkDao;
 import linky.domain.Link;

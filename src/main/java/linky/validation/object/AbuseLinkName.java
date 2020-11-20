@@ -7,7 +7,7 @@ import java.util.List;
 
 @Component
 public class AbuseLinkName implements LinkName.Abuseness {
-	
+
 	@Value("#{'${reserved.words}'.split(',')}")
 	private List<String> reservedWords;
 	@Value("#{'${abuse.words}'.split(',')}")

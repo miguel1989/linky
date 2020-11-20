@@ -10,12 +10,12 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component 
+@Component
 public class Reactions {
 
 	private Map<Type, Reaction> mapping = new ConcurrentHashMap<>();
 //	private final LoadingCache<Type, Reaction> cachedReactions;
-	
+
 	@Autowired
 	public Reactions(ListableBeanFactory beanFactory) {
 		reactions(beanFactory).forEach(reaction -> mapping.put(reaction.commandType().getType(), reaction));

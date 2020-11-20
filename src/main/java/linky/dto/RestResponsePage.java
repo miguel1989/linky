@@ -1,14 +1,15 @@
 package linky.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RestResponsePage<T> extends PageImpl<T> {
 	private static final long serialVersionUID = 3248189030448292002L;
-	
+
 	@JsonIgnore
 	private Pageable pageable;
 
@@ -40,4 +41,4 @@ public class RestResponsePage<T> extends PageImpl<T> {
 	public void setPageable(Pageable pageable) {
 		this.pageable = pageable;
 	}
-} 
+}

@@ -23,7 +23,7 @@ public class Validations {
 	private Collection<Validation> validations(ListableBeanFactory beanFactory) {
 		return beanFactory.getBeansOfType(Validation.class).values();
 	}
-	
+
 	<C extends Command> Optional<Validation<C>> byCommand(C command) {
 		return Optional.ofNullable(mapping.get(command.type()));
 	}

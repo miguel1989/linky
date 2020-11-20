@@ -14,21 +14,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin/link")
 public class LinkAdminController {
 
-    @Autowired
-    private PipedNow pipedNow;
+	@Autowired
+	private PipedNow pipedNow;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{id:.*}")
-    public LinkBean link(@PathVariable(value = "id") String id) {
-        return pipedNow.execute(new FindAnyLink(id));
-    }
+	@RequestMapping(method = RequestMethod.GET, value = "/{id:.*}")
+	public LinkBean link(@PathVariable(value = "id") String id) {
+		return pipedNow.execute(new FindAnyLink(id));
+	}
 
-    //todo admin update link
+	//todo admin update link
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{id:.*}")
-    public String delete(@PathVariable(value = "id") String id) {
-        new DeleteAnyLink(id).execute(pipedNow);
-        return "ok";
-    }
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id:.*}")
+	public String delete(@PathVariable(value = "id") String id) {
+		new DeleteAnyLink(id).execute(pipedNow);
+		return "ok";
+	}
 
 //	@RequestMapping(method = RequestMethod.GET, value = "/{id:.*}/visits")
 //	public Collection<VisitBean> visits(@PathVariable(value = "id") String id) {

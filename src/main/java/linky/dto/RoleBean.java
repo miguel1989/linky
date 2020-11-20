@@ -4,8 +4,8 @@ import org.springframework.security.core.GrantedAuthority;
 
 public class RoleBean implements GrantedAuthority {
 	public String value;
-	
-	RoleBean (String value) {
+
+	RoleBean(String value) {
 		this.value = value;
 	}
 
