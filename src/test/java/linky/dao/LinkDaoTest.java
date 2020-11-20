@@ -45,6 +45,22 @@ public class LinkDaoTest {
     }
 
     @Test
+    public void findByCreatedByPageable() {
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<Link> pageLinks =  linkDao.findByCreatedBy("batman", pageable);
+        assertEquals(2L, pageLinks.getTotalElements());
+        assertEquals(2, pageLinks.getContent().size());
+        assertEquals(1, pageLinks.getTotalPages());
+        check(pageLinks.getContent().get(0), "gogle", "www.google.lv");
+        check(pageLinks.getContent().get(1), "gogle2", "www.google2.lv");
+
+        pageLinks = linkDao.findByCreatedBy("wrong", pageable);
+        assertEquals(0L, pageLinks.getTotalElements());
+        assertEquals(0, pageLinks.getContent().size());
+        assertEquals(0, pageLinks.getTotalPages());
+    }
+
+    @Test
     public void findByName() {
         Optional<Link> optional = linkDao.findByName("gogle");
         assertTrue(optional.isPresent());
