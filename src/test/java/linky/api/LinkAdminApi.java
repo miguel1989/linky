@@ -10,6 +10,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,8 +38,7 @@ public class LinkAdminApi extends BaseApi {
 
 	public ResponseEntity<LinkBean> findLink(String id) {
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set(HttpHeaders.AUTHORIZATION,
-				buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
+		httpHeaders.setBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD, StandardCharsets.UTF_8);
 
 		HttpEntity<String> request = new HttpEntity<>(httpHeaders);
 
@@ -51,8 +51,7 @@ public class LinkAdminApi extends BaseApi {
 
 	public ResponseEntity<RestResponsePage<LinkBeanSimple>> findLinks(String name, String url) { //Page<LinkBeanSimple>
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set(HttpHeaders.AUTHORIZATION,
-				buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
+		httpHeaders.setBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD, StandardCharsets.UTF_8);
 
 		HttpEntity<CreateLinkBean> request = new HttpEntity<>(httpHeaders);
 
@@ -74,8 +73,7 @@ public class LinkAdminApi extends BaseApi {
 
 	public void deleteAnyLinkAndAssert(String id) {
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set(HttpHeaders.AUTHORIZATION,
-				buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
+		httpHeaders.setBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD, StandardCharsets.UTF_8);
 
 		HttpEntity<String> request = new HttpEntity<>(httpHeaders);
 

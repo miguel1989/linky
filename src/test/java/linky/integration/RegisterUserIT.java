@@ -10,13 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class RegisterUserIT extends BasicIntegrationTest {
 
 	@Test
-	public void deleteAndRegister() {
-		userApi.deleteUserAndAssert(TEST_USER_EMAIL);
-		userApi.registerUserAndAssert(TEST_USER_EMAIL);
-		//todo check that there is no users with this email registered
-	}
-
-	@Test
 	public void duplicateEmail() {
 		Throwable exceptionThatWasThrown = Assertions.assertThrows(HttpClientErrorException.class, () -> {
 			userApi.registerUser(TEST_USER_EMAIL);

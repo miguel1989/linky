@@ -2,8 +2,8 @@ package linky;
 
 import linky.api.LinkAdminApi;
 import linky.api.LinkApi;
+import linky.api.UserAdminApi;
 import linky.api.UserApi;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,8 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.nio.charset.StandardCharsets;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
@@ -29,6 +27,9 @@ public abstract class BasicIntegrationTest {
 	protected UserApi userApi;
 
 	@Autowired
+	protected UserAdminApi userAdminApi;
+
+	@Autowired
 	protected LinkApi linkApi;
 
 	@Autowired
@@ -41,24 +42,18 @@ public abstract class BasicIntegrationTest {
 	@BeforeEach
 	public void setup() {
 		//todo find a better way to pass port to API
+		userAdminApi.useLocalUrl(localUrl());
 		userApi.useLocalUrl(localUrl());
 		linkApi.useLocalUrl(localUrl());
 		linkAdminApi.useLocalUrl(localUrl());
 
-		userApi.deleteUserAndAssert(TEST_USER_EMAIL);
+		userAdminApi.deleteUserAndAssert(TEST_USER_EMAIL);
 		userApi.registerUserAndAssert(TEST_USER_EMAIL);
 	}
 
 	@AfterEach
 	public void cleanUp() {
-		userApi.deleteUserAndAssert(TEST_USER_EMAIL);
-	}
-
-	public static String buildBasicAuth(String email, String pass) {
-		String auth = email + ":" + pass;
-		byte[] encodedAuth = Base64.encodeBase64(
-				auth.getBytes(StandardCharsets.UTF_8));
-		return "Basic " + new String(encodedAuth);
+		userAdminApi.deleteUserAndAssert(TEST_USER_EMAIL);
 	}
 
 	public String localUrl() {

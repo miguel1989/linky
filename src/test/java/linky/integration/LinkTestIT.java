@@ -51,10 +51,7 @@ public class LinkTestIT extends BasicIntegrationTest {
 		linkApi.createLinkAndAssert("1gogle1", "www.google.lv");
 		linkApi.createLinkAndAssert("2gogle2", "www.google2.lv");
 
-		ResponseEntity<RestResponsePage<LinkBeanSimple>> responseEntity = linkApi.findMyLinks();
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-		RestResponsePage<LinkBeanSimple> result = responseEntity.getBody();
+		RestResponsePage<LinkBeanSimple> result = linkApi.findMyLinks();
 		assertEquals(2, result.getContent().size());
 	}
 

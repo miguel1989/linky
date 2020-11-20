@@ -41,20 +41,4 @@ public class UserApi extends BaseApi {
 				request,
 				UserBean.class);
 	}
-
-	public void deleteUserAndAssert(String email) {
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set(HttpHeaders.AUTHORIZATION,
-				buildBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD));
-		HttpEntity<String> request = new HttpEntity<>(null, httpHeaders);
-
-		ResponseEntity<String> response = restTemplate.exchange(
-				localUrl + "/admin/user/" + email,
-				HttpMethod.DELETE,
-				request,
-				String.class);
-
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertEquals("ok", response.getBody());
-	}
 }

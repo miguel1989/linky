@@ -36,6 +36,10 @@ public class FindLinksForUser implements Command<PageLinksBeanSimple> {
 
 	@Override
 	public String toLogString() {
-		return "FindLinksForUser(userId = " + userId + " )";
+		return "FindLinksForUser{" +
+				"userId=" + userId +
+				", page=" + page +
+				", size=" + size +
+				'}';
 	}
 }

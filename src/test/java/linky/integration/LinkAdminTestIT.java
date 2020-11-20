@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AdminLinkTestIT extends BasicIntegrationTest {
+public class LinkAdminTestIT extends BasicIntegrationTest {
 
 	@Test
-	public void adminFindLinks() {
+	public void findLinks() {
 		linkApi.createLinkAndAssert("1gogle1", "www.google.lv");
 		linkApi.createLinkAndAssert("2gogle2", "www.google2.lv");
 		linkApi.createLinkAndAssert("yaho", "www.yahoo.lv");

@@ -10,6 +10,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,17 +26,16 @@ public class LinkApi extends BaseApi {
 		super(restTemplate);
 	}
 
-	public ResponseEntity<RestResponsePage<LinkBeanSimple>> findMyLinks() {
+	public RestResponsePage<LinkBeanSimple> findMyLinks() {
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set(HttpHeaders.AUTHORIZATION,
-				buildBasicAuth(TEST_USER_EMAIL, TEST_PASSWORD));
+		httpHeaders.setBasicAuth(TEST_USER_EMAIL, TEST_PASSWORD, StandardCharsets.UTF_8);
 
 		HttpEntity<CreateLinkBean> request = new HttpEntity<>(httpHeaders);
 
 		//there are also page & size params
 		Map<String, String> params = new HashMap<>();
 
-		return restTemplate.exchange(
+		ResponseEntity<RestResponsePage<LinkBeanSimple>> responseEntity = restTemplate.exchange(
 				localUrl + "/api/links",
 				HttpMethod.GET,
 				request,
@@ -43,6 +43,9 @@ public class LinkApi extends BaseApi {
 				},
 				params
 		);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		return responseEntity.getBody();
 	}
 
 	public LinkBean createLinkAndAssert(String name, String url) {
@@ -62,8 +65,7 @@ public class LinkApi extends BaseApi {
 
 	public ResponseEntity<LinkBean> createLink(String name, String url) {
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set(HttpHeaders.AUTHORIZATION,
-				buildBasicAuth(TEST_USER_EMAIL, TEST_PASSWORD));
+		httpHeaders.setBasicAuth(TEST_USER_EMAIL, TEST_PASSWORD, StandardCharsets.UTF_8);
 
 		HttpEntity<CreateLinkBean> request = new HttpEntity<>(new CreateLinkBean(name, url), httpHeaders);
 
