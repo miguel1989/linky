@@ -49,7 +49,7 @@ public class LinkAdminApi extends BaseApi {
 				LinkBean.class);
 	}
 
-	public ResponseEntity<RestResponsePage<LinkBeanSimple>> findLinks(String name, String url) { //Page<LinkBeanSimple>
+	public ResponseEntity<RestResponsePage<LinkBeanSimple>> findLinks(String search) { //Page<LinkBeanSimple>
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD, StandardCharsets.UTF_8);
 
@@ -57,12 +57,11 @@ public class LinkAdminApi extends BaseApi {
 
 		//there are also page & size params
 		Map<String, String> params = new HashMap<>();
-		params.put("name", name);
-		params.put("url", url);
+		params.put("search", search);
 
 		//	new TypeReference<PageImpl<LinkBeanSimple>>(){}
 		return restTemplate.exchange(
-				localUrl + "/admin/links?name={name}&url={url}",
+				localUrl + "/admin/links?search={search}",
 				HttpMethod.GET,
 				request,
 				new ParameterizedTypeReference<RestResponsePage<LinkBeanSimple>>() {

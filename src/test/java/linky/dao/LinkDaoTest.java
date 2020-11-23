@@ -1,7 +1,7 @@
 package linky.dao;
 
-import linky.dao.specification.LinkSpecification;
 import linky.domain.Link;
+import linky.domain.SearchContent;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,56 +71,27 @@ public class LinkDaoTest {
 	}
 
 	@Test
-	public void findByNameLike() {
-//		List<Link> links = linkDao.findByNameLikeOrUrlLike("%gogle%", "");
-		List<Link> links = linkDao.findAll(LinkSpecification.byNameOrUrl("%gogle%", null));
-		assertEquals(2, links.size());
-		check(links.get(0), "gogle", "www.google.lv");
-		check(links.get(1), "gogle2", "www.google2.lv");
+	public void findBySearchPageable() {
+		Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "id");
+		Page<Link> pageLinks = linkDao.findBySearchLikeIgnoreCase("%GoglE%", pageable);
 
-		links = linkDao.findAll(LinkSpecification.byNameOrUrl("%ya%", null));
-		assertEquals(1, links.size());
-		check(links.get(0), "yaho", "www.yahoo.lv");
-	}
+		assertEquals(2L, pageLinks.getTotalElements());
+		assertEquals(2, pageLinks.getContent().size());
+		assertEquals(1, pageLinks.getTotalPages());
 
-	@Test
-	public void findByUrlLike() {
-		List<Link> links = linkDao.findAll(LinkSpecification.byNameOrUrl(null, "%www.google%"));
-		assertEquals(2, links.size());
-		check(links.get(0), "gogle", "www.google.lv");
-		check(links.get(1), "gogle2", "www.google2.lv");
+		check(pageLinks.getContent().get(0), "gogle2", "www.google2.lv");
+		check(pageLinks.getContent().get(1), "gogle", "www.google.lv");
 
-		links = linkDao.findAll(LinkSpecification.byNameOrUrl(null, "%www.bing.lv%"));
-		assertEquals(1, links.size());
-		check(links.get(0), "bing", "www.bing.lv");
-	}
+		pageLinks = linkDao.findBySearchLikeIgnoreCase("%YA%", pageable);
+		assertEquals(1L, pageLinks.getTotalElements());
+		assertEquals(1, pageLinks.getContent().size());
+		assertEquals(1, pageLinks.getTotalPages());
+		check(pageLinks.getContent().get(0), "yaho", "www.yahoo.lv");
 
-	@Test
-	public void findByNameLikeAndUrlLike() {
-		List<Link> links = linkDao.findAll(LinkSpecification.byNameOrUrl("%gogle2%", "%www.google%"));
-		assertEquals(1, links.size());
-		check(links.get(0), "gogle2", "www.google2.lv");
-
-		links = linkDao.findAll(LinkSpecification.byNameOrUrl("%gogle3%", "%www.google%"));
-		assertEquals(0, links.size());
-
-		links = linkDao.findAll(LinkSpecification.byNameOrUrl(null, null));
-		assertEquals(4, links.size());
-	}
-
-	@Test
-	public void findByNameLikeAndUrlLikePageable() {
-		for (int i = 0; i < 10; i++) {
-			linkDao.save(
-					new Link("testNAME" + i, "www.facebook.com", "cukerman")
-			);
-		}
-
-		Pageable pageable = PageRequest.of(0, 5);
-		Page<Link> pageLinks = linkDao.findAll(LinkSpecification.byNameOrUrl("%NAME%", "%face%"), pageable);
-		assertEquals(10L, pageLinks.getTotalElements());
-		assertEquals(5, pageLinks.getContent().size());
-		assertEquals(2, pageLinks.getTotalPages());
+		pageLinks = linkDao.findBySearchLikeIgnoreCase("%%", pageable);
+		assertEquals(4L, pageLinks.getTotalElements());
+		assertEquals(4, pageLinks.getContent().size());
+		assertEquals(1, pageLinks.getTotalPages());
 	}
 
 	private void createTestLinks() {
@@ -127,6 +99,11 @@ public class LinkDaoTest {
 		Link link2 = new Link("gogle2", "www.google2.lv", "batman");
 		Link link3 = new Link("bing", "www.bing.lv", "superman");
 		Link link4 = new Link("yaho", "www.yahoo.lv", "spiderman");
+
+		link1.updateSearch();
+		link2.updateSearch();
+		link3.updateSearch();
+		link4.updateSearch();
 
 		linkDao.save(link1);
 		linkDao.save(link2);

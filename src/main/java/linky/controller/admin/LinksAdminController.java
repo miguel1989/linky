@@ -20,14 +20,13 @@ public class LinksAdminController {
 	@RequestMapping(method = RequestMethod.GET)
 	public Page<LinkBeanSimple> links(@RequestParam(required = false, value = "page") Integer page,
 									  @RequestParam(required = false, value = "size") Integer pageSize,
-									  @RequestParam(required = false, value = "name") String name,
-									  @RequestParam(required = false, value = "url") String url) {
+									  @RequestParam(required = false, value = "search") String search) {
 		if (page == null) {
 			page = 0;
 		}
 		if (pageSize == null) {
 			pageSize = 20;
 		}
-		return new FindLinks(page, pageSize, name, url).execute(pipedNow).pageLinks;
+		return new FindLinks(page, pageSize, search).execute(pipedNow).pageLinks;
 	}
 }

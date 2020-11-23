@@ -17,13 +17,13 @@ public class LinkAdminTestIT extends BasicIntegrationTest {
 		linkApi.createLinkAndAssert("yaho", "www.yahoo.lv");
 		linkApi.createLinkAndAssert("yaho5", "www.yahoo.lv");
 
-		RestResponsePage<LinkBeanSimple> result = linkAdminApi.findLinks("gogle", null).getBody();
+		RestResponsePage<LinkBeanSimple> result = linkAdminApi.findLinks("gogle").getBody();
 		assertEquals(2, result.getContent().size());
 
-		result = linkAdminApi.findLinks("aho5", null).getBody();
+		result = linkAdminApi.findLinks("aho5").getBody();
 		assertEquals(1, result.getContent().size());
 
-		result = linkAdminApi.findLinks(null, "www.yahoo.lv").getBody();
+		result = linkAdminApi.findLinks( "www.yahoo.lv").getBody();
 		assertEquals(2, result.getContent().size());
 	}
 
@@ -32,12 +32,12 @@ public class LinkAdminTestIT extends BasicIntegrationTest {
 		LinkBean linkBean1 = linkApi.createLinkAndAssert("1gogle1", "www.google.lv");
 		LinkBean linkBean2 = linkApi.createLinkAndAssert("2gogle2", "www.google2.lv");
 
-		RestResponsePage<LinkBeanSimple> result = linkAdminApi.findLinks("gogle", null).getBody();
+		RestResponsePage<LinkBeanSimple> result = linkAdminApi.findLinks("gogle").getBody();
 		assertEquals(2, result.getContent().size());
 
 		linkAdminApi.deleteAnyLinkAndAssert(linkBean1.id);
 
-		result = linkAdminApi.findLinks("gogle", null).getBody();
+		result = linkAdminApi.findLinks("gogle").getBody();
 		assertEquals(1, result.getContent().size());
 	}
 }

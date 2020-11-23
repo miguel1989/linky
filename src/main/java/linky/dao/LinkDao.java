@@ -17,5 +17,7 @@ public interface LinkDao extends PagingAndSortingRepository<Link, UUID>, JpaSpec
 
 	Page<Link> findByCreatedBy(String createdBy, Pageable pageable);
 
+	Page<Link> findBySearchLikeIgnoreCase(String search, Pageable pageable);
+
 	Optional<Link> findByName(String name);
 }

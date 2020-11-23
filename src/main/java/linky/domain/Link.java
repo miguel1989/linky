@@ -19,8 +19,11 @@ public class Link extends BaseEntity {
 	@Column(name = "url")
 	private String url;//valid url
 
-	@Column(name = "created_by")
+	@Column(name = "created_by", length = 150)
 	private String createdBy;
+
+	@Column(name = "search", length = Integer.MAX_VALUE - 1)
+	private String search;
 
 	@OneToMany(mappedBy = "link", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Collection<Visit> visits = new LinkedList<>();
@@ -56,5 +59,13 @@ public class Link extends BaseEntity {
 
 	public String createdBy() {
 		return createdBy;
+	}
+
+	public String search() {
+		return search;
+	}
+
+	public void updateSearch() {
+		this.search = new SearchContent(this).extract();
 	}
 }

@@ -10,16 +10,14 @@ public class FindLinks implements Command<PageLinksBeanSimple> {
 
 	private int page = 0;
 	private int size = 20;
-	private final String name;
-	private final String url;
+	private final String search;
 
-	public FindLinks(String name, String url) {
-		this.name = name;
-		this.url = url;
+	public FindLinks(String search) {
+		this.search = search;
 	}
 
-	public FindLinks(int page, int size, String name, String url) {
-		this(name, url);
+	public FindLinks(int page, int size, String search) {
+		this(search);
 		this.page = page;
 		this.size = size;
 	}
@@ -36,12 +34,8 @@ public class FindLinks implements Command<PageLinksBeanSimple> {
 		return this.size;
 	}
 
-	public String name() {
-		return this.name;
-	}
-
-	public String url() {
-		return this.url;
+	public String search() {
+		return this.search;
 	}
 
 	@Override
@@ -49,8 +43,7 @@ public class FindLinks implements Command<PageLinksBeanSimple> {
 		return "FindLinks{" +
 				"page=" + page +
 				", size=" + size +
-				", name='" + name + '\'' +
-				", url='" + url + '\'' +
+				", search='" + search + '\'' +
 				'}';
 	}
 }
