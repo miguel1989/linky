@@ -18,5 +18,7 @@ public class UserAdminTestIT extends BasicIntegrationTest {
 
 		pagedUsers = userAdminApi.findUsers("MAN");
 		assertEquals(2, pagedUsers.getContent().size());
+		assertEquals("spiderman@man.com", pagedUsers.getContent().get(0).email);
+		assertEquals("superman@man.com", pagedUsers.getContent().get(1).email);
 	}
 }
