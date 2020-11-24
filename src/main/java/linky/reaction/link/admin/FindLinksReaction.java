@@ -30,7 +30,7 @@ public class FindLinksReaction implements Reaction<FindLinks, PageLinksBeanSimpl
 
 	@Override
 	public PageLinksBeanSimple react(FindLinks command) {
-		Pageable pageable = PageRequest.of(command.page(), command.size());
+		Pageable pageable = PageRequest.of(command.page(), command.size(), command.getSortDirection(), command.getSortField());
 		String search = SQL_PERCENT + StringUtils.defaultIfBlank(StringUtils.trim(command.search()), "") + SQL_PERCENT;
 		Page<Link> pageLinks = linkDao.findBySearchLikeIgnoreCase(search, pageable);
 		List<LinkBeanSimple> linkBeanSimpleList = pageLinks.getContent().stream()

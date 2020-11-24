@@ -3,23 +3,36 @@ package linky.command.link.admin;
 import com.google.common.collect.ImmutableList;
 import linky.dto.PageLinksBeanSimple;
 import linky.infra.Command;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Sort;
 
 import java.util.Collection;
 
 public class FindLinks implements Command<PageLinksBeanSimple> {
 
-	private int page = 0;
-	private int size = 20;
+	private final Integer page;
+	private final Integer size;
+	private final String sortField;
+	private Sort.Direction sortDirection = Sort.Direction.DESC;
 	private final String search;
 
-	public FindLinks(String search) {
-		this.search = search;
-	}
-
-	public FindLinks(int page, int size, String search) {
-		this(search);
+	public FindLinks(Integer page, Integer size, String sortField, String sortDirection, String search) {
+		if (page == null) {
+			page = 0;
+		}
+		if (size == null) {
+			size = 20;
+		}
+		if (StringUtils.isBlank(sortField)) {
+			sortField = "id";
+		}
+		if (StringUtils.isNotBlank(sortDirection)) {
+			this.sortDirection = Sort.Direction.valueOf(sortDirection.toUpperCase());
+		}
 		this.page = page;
 		this.size = size;
+		this.sortField = sortField;
+		this.search = search;
 	}
 
 	public Collection<TxFlag> txFlags() {
@@ -32,6 +45,14 @@ public class FindLinks implements Command<PageLinksBeanSimple> {
 
 	public int size() {
 		return this.size;
+	}
+
+	public String getSortField() {
+		return sortField;
+	}
+
+	public Sort.Direction getSortDirection() {
+		return sortDirection;
 	}
 
 	public String search() {
