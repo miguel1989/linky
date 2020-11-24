@@ -14,7 +14,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-import static linky.BasicIntegrationTest.*;
+import static linky.BasicIntegrationTest.TEST_ADMIN_EMAIL;
+import static linky.BasicIntegrationTest.TEST_PASSWORD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -26,27 +27,22 @@ public class LinkAdminApi extends BaseApi {
 		super(restTemplate);
 	}
 
-	public LinkBean findLinkSuccessAndAssert(String id) {
-		ResponseEntity<LinkBean> response = findLink(id);
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-
-		LinkBean linkBean = response.getBody();
-		assertNotNull(linkBean);
-		assertNotNull(linkBean.id);
-		return linkBean;
-	}
-
-	public ResponseEntity<LinkBean> findLink(String id) {
+	public LinkBean findLink(String id) {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setBasicAuth(TEST_ADMIN_EMAIL, TEST_PASSWORD, StandardCharsets.UTF_8);
 
 		HttpEntity<String> request = new HttpEntity<>(httpHeaders);
 
-		return restTemplate.exchange(
+		ResponseEntity<LinkBean> responseEntity = restTemplate.exchange(
 				localUrl + "/admin/link/" + id,
 				HttpMethod.GET,
 				request,
 				LinkBean.class);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		LinkBean linkBean = responseEntity.getBody();
+		assertNotNull(linkBean);
+		return linkBean;
 	}
 
 	public RestResponsePage<LinkBeanSimple> findLinks(String search) { //Page<LinkBeanSimple>

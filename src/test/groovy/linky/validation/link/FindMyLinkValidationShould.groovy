@@ -67,7 +67,7 @@ class FindMyLinkValidationShould extends Specification {
 
 		then:
 		def ex = thrown(ValidationFailed)
-		ex.message == 'You are not allowed to read this link'
+		ex.message == 'Link not found'
 	}
 
 	def 'everything is ok'() {

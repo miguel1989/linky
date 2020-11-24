@@ -4,6 +4,7 @@ import linky.dto.CreateLinkBean;
 import linky.dto.LinkBean;
 import linky.dto.LinkBeanSimple;
 import linky.dto.RestResponsePage;
+import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -14,7 +15,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-import static linky.BasicIntegrationTest.*;
+import static linky.BasicIntegrationTest.TEST_PASSWORD;
+import static linky.BasicIntegrationTest.TEST_USER_EMAIL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -48,11 +50,26 @@ public class LinkApi extends BaseApi {
 		return responseEntity.getBody();
 	}
 
-	public LinkBean createLinkAndAssert(String name, String url) {
-		ResponseEntity<LinkBean> response = createLink(name, url);
+	public LinkBean findLink(String id) {
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setBasicAuth(TEST_USER_EMAIL, TEST_PASSWORD, StandardCharsets.UTF_8);
 
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		LinkBean linkBean = response.getBody();
+		HttpEntity<String> request = new HttpEntity<>(httpHeaders);
+
+		ResponseEntity<LinkBean> responseEntity = restTemplate.exchange(
+				localUrl + "/api/link/" + id,
+				HttpMethod.GET,
+				request,
+				LinkBean.class);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		LinkBean linkBean = responseEntity.getBody();
+		assertNotNull(linkBean);
+		return linkBean;
+	}
+
+	public LinkBean createLinkAndAssert(String name, String url) {
+		LinkBean linkBean = createLink(name, url);
 		assertNotNull(linkBean);
 		assertNotNull(linkBean.id);
 		assertEquals(url, linkBean.url);
@@ -63,16 +80,23 @@ public class LinkApi extends BaseApi {
 		return linkBean;
 	}
 
-	public ResponseEntity<LinkBean> createLink(String name, String url) {
+	public LinkBean createLink(String name, String url) {
+		return createLink(name, url, TEST_USER_EMAIL);
+	}
+
+	public LinkBean createLink(String name, String url, String userEmail) {
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setBasicAuth(TEST_USER_EMAIL, TEST_PASSWORD, StandardCharsets.UTF_8);
+		httpHeaders.setBasicAuth(userEmail, TEST_PASSWORD, StandardCharsets.UTF_8);
 
 		HttpEntity<CreateLinkBean> request = new HttpEntity<>(new CreateLinkBean(name, url), httpHeaders);
 
-		return restTemplate.exchange(
+		ResponseEntity<LinkBean> responseEntity = restTemplate.exchange(
 				localUrl + "/api/link/create",
 				HttpMethod.POST,
 				request,
 				LinkBean.class);
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+		return responseEntity.getBody();
 	}
 }

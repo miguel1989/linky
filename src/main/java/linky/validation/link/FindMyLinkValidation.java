@@ -34,7 +34,7 @@ public class FindMyLinkValidation implements Validation<FindMyLink> {
 		}
 
 		if (!optLink.get().createdBy().equals(command.requestUserId())) {
-			throw new ValidationFailed("You are not allowed to read this link");
+			throw new ValidationFailed("Link not found");
 		}
 	}
 }

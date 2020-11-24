@@ -36,6 +36,7 @@ public abstract class BasicIntegrationTest {
 	protected LinkAdminApi linkAdminApi;
 
 	public static final String TEST_USER_EMAIL = "user@test.lv";
+	public static final String TEST_USER_EMAIL2 = "user2@test.lv";
 	public static final String TEST_ADMIN_EMAIL = "admin@test.lv";
 	public static final String TEST_PASSWORD = "secret";
 
@@ -49,6 +50,9 @@ public abstract class BasicIntegrationTest {
 
 		userAdminApi.deleteUserAndAssert(TEST_USER_EMAIL);
 		userApi.registerUserAndAssert(TEST_USER_EMAIL);
+
+		userAdminApi.deleteUserAndAssert(TEST_USER_EMAIL2);
+		userApi.registerUserAndAssert(TEST_USER_EMAIL2);
 	}
 
 	@AfterEach

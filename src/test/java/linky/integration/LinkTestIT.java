@@ -57,13 +57,29 @@ public class LinkTestIT extends BasicIntegrationTest {
 //				.andExpect(status().isOk())
 				.andExpect(redirectedUrl("www.google.lv"));
 
-		linkBean = linkAdminApi.findLinkSuccessAndAssert(linkBean.id);
+		linkBean = linkApi.findLink(linkBean.id);
 		assertEquals("gogle", linkBean.name);
 		assertEquals("www.google.lv", linkBean.url);
 		assertEquals(1, linkBean.visits.size());
 
 		RestResponsePage<LinkBeanSimple> result = linkApi.findMyLinks();
 		assertEquals(1, result.getContent().size());
+		assertEquals("gogle", result.getContent().get(0).name);
+		assertEquals(1, result.getContent().get(0).visitCount);
+	}
+
+	@Test
+	public void noAccessToOtherUsersLinks() {
+		LinkBean linkBean1 = linkApi.createLink("gogle1", "www.google.lv");
+		LinkBean linkBean2 = linkApi.createLink("gogle2", "www.google.lv", TEST_USER_EMAIL2);
+
+		LinkBean linkBean = linkApi.findLink(linkBean1.id);
+		assertEquals("gogle1", linkBean.name);
+
+		Throwable exceptionThatWasThrown = Assertions.assertThrows(HttpClientErrorException.class, () -> {
+			linkApi.findLink(linkBean2.id);
+		});
+		assertEquals("400 : [Link not found]", exceptionThatWasThrown.getMessage());
 	}
 
 	@Test
