@@ -5,6 +5,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 public class LinkUrl {
+	public static final int LINK_URL_SIZE = 1000;
+
 	private String urlStr;
 
 	public LinkUrl(String url) {
@@ -26,6 +28,7 @@ public class LinkUrl {
 		} catch (URISyntaxException e) {
 			return false;
 		}
-		return true;
+
+		return this.urlStr.length() <= LINK_URL_SIZE;
 	}
 }

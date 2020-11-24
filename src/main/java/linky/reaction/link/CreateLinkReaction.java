@@ -21,7 +21,7 @@ public class CreateLinkReaction implements Reaction<CreateLink, LinkBean> {
 	@Override
 	public LinkBean react(CreateLink command) {
 		Link link = new Link(command.name(), command.url(), command.userId());
-		link.updateSearch();
+		link.updateSearch(); //todo maybe use @prePersist
 		linkDao.save(link);
 		return new LinkBean(link);
 	}

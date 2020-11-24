@@ -41,7 +41,7 @@ public class CreateLinkValidation implements Validation<CreateLink> {
 		}
 
 		if (!new LinkName(command.name()).isValid()) {
-			throw new ValidationFailed("Incorrect link name");
+			throw new ValidationFailed("Incorrect link name"); //todo maybe more informative message
 		}
 
 		if (!abuseLinkName.isOk(command.name())) {

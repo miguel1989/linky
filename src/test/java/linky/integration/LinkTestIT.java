@@ -4,13 +4,14 @@ import linky.BasicIntegrationTest;
 import linky.dto.LinkBean;
 import linky.dto.LinkBeanSimple;
 import linky.dto.RestResponsePage;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.net.URI;
@@ -33,6 +34,22 @@ public class LinkTestIT extends BasicIntegrationTest {
 	}
 
 	@Test
+	public void createWithLongName() {
+		Throwable exceptionThatWasThrown = Assertions.assertThrows(HttpClientErrorException.class, () -> {
+			linkApi.createLinkAndAssert(RandomStringUtils.randomAlphanumeric(300), "www.google.lv");
+		});
+		assertEquals("400 : [Incorrect link name]", exceptionThatWasThrown.getMessage());
+	}
+
+	@Test
+	public void createWithLongUrl() {
+		Throwable exceptionThatWasThrown = Assertions.assertThrows(HttpClientErrorException.class, () -> {
+			linkApi.createLinkAndAssert("gogle", RandomStringUtils.randomAlphanumeric(1200));
+		});
+		assertEquals("400 : [Incorrect link url]", exceptionThatWasThrown.getMessage());
+	}
+
+	@Test
 	public void visitLink() throws Exception {
 		LinkBean linkBean = linkApi.createLinkAndAssert("gogle", "www.google.lv");
 
@@ -44,6 +61,9 @@ public class LinkTestIT extends BasicIntegrationTest {
 		assertEquals("gogle", linkBean.name);
 		assertEquals("www.google.lv", linkBean.url);
 		assertEquals(1, linkBean.visits.size());
+
+		RestResponsePage<LinkBeanSimple> result = linkApi.findMyLinks();
+		assertEquals(1, result.getContent().size());
 	}
 
 	@Test
@@ -53,6 +73,8 @@ public class LinkTestIT extends BasicIntegrationTest {
 
 		RestResponsePage<LinkBeanSimple> result = linkApi.findMyLinks();
 		assertEquals(2, result.getContent().size());
+		assertEquals("2gogle2", result.getContent().get(0).name);
+		assertEquals("1gogle1", result.getContent().get(1).name);
 	}
 
 }

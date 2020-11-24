@@ -1,6 +1,7 @@
 package linky.domain;
 
 import com.google.common.collect.ImmutableList;
+import linky.validation.object.LinkUrl;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -16,7 +17,7 @@ public class Link extends BaseEntity {
 	@Column(name = "name", unique = true)
 	private String name;//unique and dictionary with abuse words
 
-	@Column(name = "url")
+	@Column(name = "url", length = LinkUrl.LINK_URL_SIZE)
 	private String url;//valid url
 
 	@Column(name = "created_by", length = 150)
