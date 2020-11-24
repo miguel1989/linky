@@ -44,11 +44,11 @@ public abstract class BasePageCommand {
 		return this.size;
 	}
 
-	public String getSortField() {
+	public String sortField() {
 		return sortField;
 	}
 
-	public Sort.Direction getSortDirection() {
+	public Sort.Direction sortDirection() {
 		return sortDirection;
 	}
 }

@@ -30,7 +30,7 @@ public class FindUsersPagedReaction implements Reaction<FindUsersPaged, PageUser
 
 	@Override
 	public PageUserBean react(FindUsersPaged command) {
-		Pageable pageable = PageRequest.of(command.page(), command.size(), command.getSortDirection(), command.getSortField());
+		Pageable pageable = PageRequest.of(command.page(), command.size(), command.sortDirection(), command.sortField());
 		String searchStr = StringUtils.defaultIfBlank(StringUtils.trim(command.search()), "");
 
 		Page<User> pagedUsers = userDao.findAll(new UserSearchSpecification(searchStr).build(), pageable);

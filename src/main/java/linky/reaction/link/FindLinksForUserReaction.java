@@ -28,7 +28,7 @@ public class FindLinksForUserReaction implements Reaction<FindLinksForUser, Page
 
 	@Override
 	public PageLinksBeanSimple react(FindLinksForUser command) {
-		Pageable pageable = PageRequest.of(command.page(), command.size());
+		Pageable pageable = PageRequest.of(command.page(), command.size(), command.sortDirection(), command.sortField());
 		Page<Link> pageLinks = linkDao.findByCreatedBy(command.userId(), pageable);
 
 		List<LinkBeanSimple> linkBeanSimpleList = pageLinks.getContent().stream()

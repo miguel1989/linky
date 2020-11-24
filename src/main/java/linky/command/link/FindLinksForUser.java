@@ -1,37 +1,21 @@
 package linky.command.link;
 
-import com.google.common.collect.ImmutableList;
+import linky.command.BasePageCommand;
 import linky.dto.PageLinksBeanSimple;
 import linky.infra.Command;
 
-import java.util.Collection;
-
-public class FindLinksForUser implements Command<PageLinksBeanSimple> {
+public class FindLinksForUser extends BasePageCommand implements Command<PageLinksBeanSimple> {
 
 	private final String userId;
-	private int page = 0;
-	private int size = 20;
 
-	public FindLinksForUser(String userId, int page, int size) {
+	//todo maybe add searchStr
+	public FindLinksForUser(String userId, Integer page, Integer size, String sortField, String sortDirection) {
+		super(page, size, sortField, sortDirection);
 		this.userId = userId;
-		this.page = page;
-		this.size = size;
 	}
 
 	public String userId() {
 		return userId;
-	}
-
-	public int page() {
-		return this.page;
-	}
-
-	public int size() {
-		return this.size;
-	}
-
-	public Collection<TxFlag> txFlags() {
-		return ImmutableList.of(TxFlag.READ_ONLY);
 	}
 
 	@Override
@@ -40,6 +24,8 @@ public class FindLinksForUser implements Command<PageLinksBeanSimple> {
 				"userId=" + userId +
 				", page=" + page +
 				", size=" + size +
+				", sortField=" + sortField +
+				", sortDirection=" + sortDirection +
 				'}';
 	}
 }

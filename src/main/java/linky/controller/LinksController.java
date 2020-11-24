@@ -19,13 +19,9 @@ public class LinksController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public Page<LinkBeanSimple> myLinks(@RequestParam(required = false, value = "page") Integer page,
-										@RequestParam(required = false, value = "size") Integer pageSize) {
-		if (page == null) {
-			page = 0;
-		}
-		if (pageSize == null) {
-			pageSize = 20;
-		}
-		return new FindLinksForUser(AuthUser.id(), page, pageSize).execute(pipedNow).pageLinks;
+										@RequestParam(required = false, value = "size") Integer pageSize,
+										@RequestParam(value = "sortBy", required = false) String sortField,
+										@RequestParam(value = "sortOrder", required = false) String sortDirection) {
+		return new FindLinksForUser(AuthUser.id(), page, pageSize, sortField, sortDirection).execute(pipedNow).pageLinks;
 	}
 }
