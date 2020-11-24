@@ -16,13 +16,13 @@ public class UserSearchSpecification {
 	private final List<String> fields = Lists.newArrayList("name", "email");
 
 	public UserSearchSpecification(String searchStr) {
-		this.searchStr = SQL_PERCENT + searchStr + SQL_PERCENT;
+		this.searchStr = SQL_PERCENT + searchStr.toUpperCase() + SQL_PERCENT;
 	}
 
 	public Specification<User> build() {
-		return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.or(
+		return (root, criteriaQuery, cb) -> cb.or(
 				fields.stream()
-						.map(field -> criteriaBuilder.like(root.get(field), searchStr))
+						.map(field -> cb.like(cb.upper(root.get(field)), searchStr))
 						.toArray(Predicate[]::new)
 		);
 	}

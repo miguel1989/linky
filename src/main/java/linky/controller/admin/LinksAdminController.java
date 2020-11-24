@@ -23,6 +23,8 @@ public class LinksAdminController {
 									  @RequestParam(value = "sortBy", required = false) String sortField,
 									  @RequestParam(value = "sortOrder", required = false) String sortDirection,
 									  @RequestParam(required = false, value = "search") String search) {
-		return new FindLinks(page, pageSize, sortField, sortDirection, search).execute(pipedNow).pageLinks;
+		return new FindLinks(page, pageSize, sortField, sortDirection, search)
+				.execute(pipedNow)
+				.pageLinks;
 	}
 }

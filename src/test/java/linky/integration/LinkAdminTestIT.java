@@ -17,7 +17,7 @@ public class LinkAdminTestIT extends BasicIntegrationTest {
 		linkApi.createLinkAndAssert("yaho", "www.yahoo.lv");
 		linkApi.createLinkAndAssert("yaho5", "www.yahoo.lv");
 
-		RestResponsePage<LinkBeanSimple> result = linkAdminApi.findLinks("gogle").getBody();
+		RestResponsePage<LinkBeanSimple> result = linkAdminApi.findLinks("GogLe").getBody();
 		assertEquals(2, result.getContent().size());
 
 		result = linkAdminApi.findLinks("aho5").getBody();

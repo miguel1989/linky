@@ -11,8 +11,12 @@ public class UserAdminTestIT extends BasicIntegrationTest {
 	@Test
 	public void findAllUsers() {
 		userApi.registerUserAndAssert("superman@man.com");
+		userApi.registerUserAndAssert("spiderman@man.com");
 
 		RestResponsePage<UserBean> pagedUsers = userAdminApi.findUsers("sup");
 		assertEquals(1, pagedUsers.getContent().size());
+
+		pagedUsers = userAdminApi.findUsers("MAN");
+		assertEquals(2, pagedUsers.getContent().size());
 	}
 }

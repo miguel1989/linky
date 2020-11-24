@@ -64,6 +64,8 @@ public class FindLinks implements Command<PageLinksBeanSimple> {
 		return "FindLinks{" +
 				"page=" + page +
 				", size=" + size +
+				", sortField=" + sortField +
+				", sortDirection=" + sortDirection +
 				", search='" + search + '\'' +
 				'}';
 	}
