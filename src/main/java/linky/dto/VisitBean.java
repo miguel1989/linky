@@ -2,14 +2,14 @@ package linky.dto;
 
 import linky.domain.Visit;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public class VisitBean {
 
 	public String id;
 	public String ip;
 	public String country;
-	public LocalTime createdAt;
+	public LocalDateTime createdAt;
 	public String data;
 
 	public VisitBean() {
