@@ -143,4 +143,15 @@ public class LinkTestIT extends BasicIntegrationTest {
 		});
 		assertEquals("400 : [You are not allowed to edit this link]", exceptionThatWasThrown.getMessage());
 	}
+
+	@Test
+	public void updateFail_linkExists() {
+		LinkBean linkBean1 = linkApi.createLinkAndAssert("1gogle1", "www.google.lv");
+		LinkBean linkBean2 = linkApi.createLinkAndAssert("2gogle2", "www.google2.lv");
+
+		Throwable exceptionThatWasThrown = Assertions.assertThrows(HttpClientErrorException.class, () -> {
+			linkApi.updateLinkAndAssert(linkBean1.id, "2gogle2", "www.google.com");
+		});
+		assertEquals("400 : [Link name is already taken]", exceptionThatWasThrown.getMessage());
+	}
 }

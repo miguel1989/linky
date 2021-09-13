@@ -13,6 +13,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(value = {ValidationFailed.class})
 	public ResponseEntity<Object> handleValidation(ValidationFailed ex) {
+		//todo maybe rework with validationResponse
 		return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 	}
 }
