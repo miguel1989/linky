@@ -69,4 +69,9 @@ public class Link extends BaseEntity {
 	public void updateSearch() {
 		this.search = new SearchContent(this).extract();
 	}
+
+	public void updateNameAndUrl(String name, String url) {
+		this.name = name;
+		this.url = url;
+	}
 }

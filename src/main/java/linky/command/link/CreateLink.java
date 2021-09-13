@@ -5,9 +5,9 @@ import linky.infra.Command;
 
 public class CreateLink implements Command<LinkBean> {
 
-	private final String userId;
-	private final String name;
-	private final String url;
+	protected final String userId;
+	protected final String name;
+	protected final String url;
 
 	public CreateLink(String userId, String name, String url) {
 		this.userId = userId;

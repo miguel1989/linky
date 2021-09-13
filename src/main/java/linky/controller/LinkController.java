@@ -3,8 +3,10 @@ package linky.controller;
 import linky.command.link.CreateLink;
 import linky.command.link.DeleteMyLink;
 import linky.command.link.FindMyLink;
+import linky.command.link.UpdateLink;
 import linky.dto.CreateLinkBean;
 import linky.dto.LinkBean;
+import linky.dto.UpdateLinkBean;
 import linky.infra.PipedNow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +31,15 @@ public class LinkController {
 				createLinkBean.url).execute(pipedNow);
 	}
 
-	//update my link
+	@RequestMapping(method = RequestMethod.POST, value = "/update/{id:.*}")
+	public LinkBean update(@RequestBody UpdateLinkBean updateLinkBean, @PathVariable(value = "id") String id) {
+		return new UpdateLink(
+				AuthUser.id(),
+				updateLinkBean.name,
+				updateLinkBean.url,
+				id).execute(pipedNow);
+	}
 
-	//delete my link
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id:.*}")
 	public String delete(@PathVariable(value = "id") String id) {
 		new DeleteMyLink(id, AuthUser.id()).execute(pipedNow);

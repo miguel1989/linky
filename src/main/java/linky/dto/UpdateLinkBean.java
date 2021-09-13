@@ -1,10 +1,10 @@
 package linky.dto;
 
-public class CreateLinkBean {
+public class UpdateLinkBean {
 	public String name;
 	public String url;
 
-	public CreateLinkBean(String name, String url) {
+	public UpdateLinkBean(String name, String url) {
 		this.name = name;
 		this.url = url;
 	}
