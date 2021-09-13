@@ -34,6 +34,7 @@ public class UpdateLinkValidation implements Validation<UpdateLink> {
 	public void validate(UpdateLink command) {
 		createLinkValidation.validate(command);
 
+		//todo work on exceptions here
 		Optional<Link> optionalLink = linkDao.findById(UUID.fromString(command.linkId()));
 		if (!optionalLink.isPresent()) {
 			throw new ValidationFailed("Link does not exist");

@@ -1,5 +1,6 @@
 package linky.integration;
 
+import com.datastax.driver.core.utils.UUIDs;
 import linky.BasicIntegrationTest;
 import linky.dto.LinkBean;
 import linky.dto.LinkBeanSimple;
@@ -12,11 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.net.URI;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
@@ -93,4 +96,51 @@ public class LinkTestIT extends BasicIntegrationTest {
 		assertEquals("1gogle1", result.getContent().get(1).name);
 	}
 
+	@Test
+	public void updateSuccess() {
+		LinkBean linkBean1 = linkApi.createLinkAndAssert("1gogle1", "www.google.lv");
+		linkApi.createLinkAndAssert("2gogle2", "www.google2.lv");
+
+		linkApi.updateLinkAndAssert(linkBean1.id, "12345", "www.google.com");
+
+		RestResponsePage<LinkBeanSimple> result = linkApi.findMyLinks();
+		assertEquals(2, result.getContent().size());
+		assertEquals("2gogle2", result.getContent().get(0).name);
+		assertEquals("12345", result.getContent().get(1).name);
+		assertEquals("www.google.com", result.getContent().get(1).url);
+	}
+
+	@Test
+	public void updateFail_linkDoesNoExist() {
+		LinkBean linkBean1 = linkApi.createLinkAndAssert("1gogle1", "www.google.lv");
+
+		Throwable exceptionThatWasThrown = Assertions.assertThrows(HttpServerErrorException.class, () -> {
+			linkApi.updateLinkAndAssert("123", "12345", "www.google.com");
+		});
+		//todo work on exceptions here
+		assertTrue(exceptionThatWasThrown.getMessage().contains("Internal Server Error"));
+		//500 : [{"timestamp":"2021-09-13T07:38:40.527+00:00","status":500,"error":"Internal Server Error","message":"","path":"/api/link/update/123"}]
+	}
+
+	@Test
+	public void updateFail_linkDoesNoExist2() {
+		LinkBean linkBean1 = linkApi.createLinkAndAssert("1gogle1", "www.google.lv");
+
+		Throwable exceptionThatWasThrown = Assertions.assertThrows(HttpClientErrorException.class, () -> {
+			linkApi.updateLinkAndAssert(UUIDs.timeBased().toString(), "12345", "www.google.com");
+		});
+		assertEquals("400 : [Link does not exist]", exceptionThatWasThrown.getMessage());
+	}
+
+	@Test
+	public void updateFail_otherUserLink() {
+		LinkBean linkBean1 = linkApi.createLinkAndAssert("1gogle1", "www.google.lv");
+		LinkBean linkBean2 = linkApi.createLinkAndAssert("2gogle2", "www.google2.lv");
+		LinkBean linkBean3 = linkApi.createLink("gogle3", "www.google.lv", TEST_USER_EMAIL2);
+
+		Throwable exceptionThatWasThrown = Assertions.assertThrows(HttpClientErrorException.class, () -> {
+			linkApi.updateLinkAndAssert(linkBean3.id, "12345", "www.google.com");
+		});
+		assertEquals("400 : [You are not allowed to edit this link]", exceptionThatWasThrown.getMessage());
+	}
 }

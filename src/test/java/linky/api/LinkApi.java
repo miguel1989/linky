@@ -1,9 +1,6 @@
 package linky.api;
 
-import linky.dto.CreateLinkBean;
-import linky.dto.LinkBean;
-import linky.dto.LinkBeanSimple;
-import linky.dto.RestResponsePage;
+import linky.dto.*;
 import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -92,6 +89,38 @@ public class LinkApi extends BaseApi {
 
 		ResponseEntity<LinkBean> responseEntity = restTemplate.exchange(
 				localUrl + "/api/link/create",
+				HttpMethod.POST,
+				request,
+				LinkBean.class);
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+		return responseEntity.getBody();
+	}
+
+	public LinkBean updateLinkAndAssert(String linkId, String name, String url) {
+		LinkBean linkBean = updateLink(linkId, name, url);
+		assertNotNull(linkBean);
+		assertEquals(linkId, linkBean.id);
+		assertEquals(url, linkBean.url);
+		assertEquals(name, linkBean.name);
+		assertEquals(0, linkBean.visits.size());
+		//todo think about the visits
+
+		return linkBean;
+	}
+
+	public LinkBean updateLink(String linkId, String name, String url) {
+		return updateLink(linkId, name, url, TEST_USER_EMAIL);
+	}
+
+	public LinkBean updateLink(String linkId, String name, String url, String userEmail) {
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setBasicAuth(userEmail, TEST_PASSWORD, StandardCharsets.UTF_8);
+
+		HttpEntity<UpdateLinkBean> request = new HttpEntity<>(new UpdateLinkBean(name, url), httpHeaders);
+
+		ResponseEntity<LinkBean> responseEntity = restTemplate.exchange(
+				localUrl + "/api/link/update/" + linkId,
 				HttpMethod.POST,
 				request,
 				LinkBean.class);
